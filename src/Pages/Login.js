@@ -83,6 +83,12 @@ function Login() {
               <AiOutlineGoogle size={25} />
               <span className="mt-1">Login with google</span>
             </button>
+            <div className="text-center">
+              Don't Have Account?
+              <Link to="/signup" className="link link-primary">
+                Register now
+              </Link>
+            </div>
           </form>
         </div>
       </div>
