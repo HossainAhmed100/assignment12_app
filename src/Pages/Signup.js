@@ -1,20 +1,44 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import {
   AiOutlineGoogle,
   AiOutlineEye,
   AiOutlineEyeInvisible,
 } from "react-icons/ai";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
 import UseHealmet from "../Hooks/UseHealmet";
+import { AuthContext } from "../Context/AuthProvider";
 function Signup() {
+  const { createNewUser, upadteUser } = useContext(AuthContext);
+  const navigate = useNavigate();
   const [isOPEN, setIsOPEN] = useState(false);
   const {
     register,
     formState: { errors },
     handleSubmit,
   } = useForm();
-  const onSubmit = (data) => console.log(data);
+  const onSubmit = async (data) => {
+    const name = data.name;
+    const email = data.email;
+    const password = data.password;
+    await createNewUser(name, email, password)
+      .then((userCredential) => {
+        const users = userCredential.user;
+        if (users.uid) {
+          userUpadtep(name).then(() => {
+            navigate("/");
+          });
+        }
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        console.log(errorCode);
+      });
+  };
+
+  const userUpadtep = async (name) => {
+    return await upadteUser(name);
+  };
 
   return (
     <div>

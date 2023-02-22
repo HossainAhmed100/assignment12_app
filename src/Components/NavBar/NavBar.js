@@ -1,10 +1,19 @@
 import React, { useContext } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import { AuthContext } from "../../Context/AuthProvider";
 import logo from "../../Utility/icon/logo.png";
 
 function NavBar() {
-  const { user } = useContext(AuthContext);
+  const { user, logoutUser } = useContext(AuthContext);
+  const navigate = useNavigate();
+  const handleUserLogOut = () => {
+    logoutUser().then(() => {
+      navigate("/login");
+      toast.success("Logout Successfullay!");
+    });
+  };
+
   return (
     <div className="bg-slate-100">
       <div className="container mx-auto">
@@ -64,6 +73,36 @@ function NavBar() {
           </div>
           <div className="navbar-end">
             {user ? (
+              <div className="dropdown dropdown-end">
+                <label tabIndex={0} className="btn btn-ghost btn-circle avatar">
+                  <div className="w-10 ring rounded-full">
+                    <img src={logo} alt="" />
+                  </div>
+                </label>
+                <ul
+                  tabIndex={0}
+                  className="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52"
+                >
+                  <li>
+                    <Link to="/">Dashboard</Link>
+                  </li>
+                  <li>
+                    <Link to="/allproducts">Account</Link>
+                  </li>
+                  <li>
+                    <Link to="/reviews">My Orders</Link>
+                  </li>
+                  <li>
+                    <button
+                      onClick={handleUserLogOut}
+                      className="text-red-500 font-bol"
+                    >
+                      Logout
+                    </button>
+                  </li>
+                </ul>
+              </div>
+            ) : (
               <>
                 <Link to="/signup" className="btn btn-primary btn-sm mg:btn">
                   Signup
@@ -72,10 +111,6 @@ function NavBar() {
                   Login
                 </Link>
               </>
-            ) : (
-              <a href="/" className="btn">
-                Profile
-              </a>
             )}
           </div>
         </div>
