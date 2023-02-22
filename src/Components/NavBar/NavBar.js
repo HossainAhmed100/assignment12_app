@@ -65,7 +65,7 @@ function NavBar() {
           <div className="navbar-end">
             {user ? (
               <>
-                <Link to="/signup" className="btn  btn-sm mg:btn">
+                <Link to="/signup" className="btn btn-primary btn-sm mg:btn">
                   Signup
                 </Link>
                 <Link to="/login" className="btn ml-2 btn-sm mg:btn">

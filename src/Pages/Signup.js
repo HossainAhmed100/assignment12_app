@@ -87,15 +87,24 @@ function Signup() {
                 <input
                   {...register("checkbox", { required: true })}
                   type="checkbox"
-                  className="checkbox"
+                  className={
+                    errors.checkbox?.type === "required"
+                      ? "checkbox checkbox-error"
+                      : "checkbox"
+                  }
                 />
                 <span className="label-text ml-2">
                   Accept{" "}
                   <Link to="/termsandpolicy" className="link link-primary">
-                    Terms & privicay policy
+                    Terms & Condition
                   </Link>
                 </span>
               </label>
+              {errors.checkbox?.type === "required" && (
+                <p role="alert" className="text-red-500">
+                  Plz Accept Terms & Condition
+                </p>
+              )}
             </div>
             <input
               className="btn btn-primary  w-full max-w-xs"
