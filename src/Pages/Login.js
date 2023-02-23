@@ -1,20 +1,38 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import {
   AiOutlineGoogle,
   AiOutlineEye,
   AiOutlineEyeInvisible,
 } from "react-icons/ai";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import UseHealmet from "../Hooks/UseHealmet";
+import { AuthContext } from "../Context/AuthProvider";
+import { toast } from "react-toastify";
 function Login() {
   const [isOPEN, setIsOPEN] = useState(false);
+  const { loginUser } = useContext(AuthContext);
+  const [loginErr, setLoginErr] = useState("");
+  const navigate = useNavigate();
   const {
     register,
     formState: { errors },
     handleSubmit,
   } = useForm();
-  const onSubmit = (data) => console.log(data);
+  const onSubmit = (data) => {
+    setLoginErr("");
+    const email = data.email;
+    const password = data.password;
+    loginUser(email, password)
+      .then(() => {
+        navigate("/");
+        toast.success("Log in Sucessed!");
+      })
+      .catch((error) => {
+        const errorCode = error.code.split("/")[1];
+        setLoginErr(errorCode);
+      });
+  };
 
   return (
     <div>
@@ -26,6 +44,12 @@ function Login() {
             className="space-y-3 bg-white p-8 custom_box w-96"
           >
             <h1 className="text-2xl font-bold text-center">Login now</h1>
+            {loginErr && (
+              <h1 className="text-base font-normal text-red-500 text-center">
+                {loginErr}
+              </h1>
+            )}
+
             <div className="form-control">
               <label>Email *</label>
               <input

@@ -5,7 +5,7 @@ import {
   AiOutlineEyeInvisible,
 } from "react-icons/ai";
 import { useForm } from "react-hook-form";
-import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import UseHealmet from "../Hooks/UseHealmet";
 import { AuthContext } from "../Context/AuthProvider";
 function Signup() {
