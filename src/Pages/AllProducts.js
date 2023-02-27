@@ -6,6 +6,8 @@ import { HiOutlineCloudUpload } from "react-icons/hi";
 import { useDropzone } from "react-dropzone";
 import axios from "../axios";
 import { toast } from "react-toastify";
+import { useQuery } from "@tanstack/react-query";
+import ProductCard from "../Components/ProductCard/ProductCard";
 function AllProducts() {
   const [isOPEN, setIsOPEN] = useState(false);
   const [files, setFiles] = useState(null);
@@ -21,9 +23,19 @@ function AllProducts() {
   const selected_image = <img src={files} className="w-24 rounded-xl" alt="" />;
   const {
     register,
+    reset,
     formState: { errors },
     handleSubmit,
   } = useForm();
+
+  //Fetch All Product
+  const { data: products = [], refetch } = useQuery({
+    queryKey: ["allproducts"],
+    queryFn: async () => {
+      const res = await axios.get("/allproducts");
+      return res.data;
+    },
+  });
 
   // Add New Product
   const onSubmit = async (data) => {
@@ -49,6 +61,10 @@ function AllProducts() {
                 .post("/addNewProduct", { product })
                 .then((res) => {
                   if (res.data.acknowledged) {
+                    setFiles(null);
+                    setFiless(null);
+                    reset();
+                    refetch();
                     toast.success("Product Added Succeed!");
                   }
                 })
@@ -57,7 +73,6 @@ function AllProducts() {
             postProduct();
           }
         });
-      console.log(imagehostKey, filess);
     }
   };
 
@@ -111,7 +126,7 @@ function AllProducts() {
                   <input
                     {...register("minorderquantity", { required: true })}
                     type="number"
-                    placeholder="Type Your Email"
+                    placeholder="Minimum Order Quantity"
                     className="input input-bordered w-full max-w-xs"
                   />
                   {errors.minorderquantity?.type === "required" && (
@@ -125,7 +140,7 @@ function AllProducts() {
                   <input
                     {...register("availablequantity", { required: true })}
                     type="number"
-                    placeholder="Type Your Email"
+                    placeholder="Available Product Quantity"
                     className="input input-bordered w-full max-w-xs"
                   />
                   {errors.availablequantity?.type === "required" && (
@@ -139,7 +154,7 @@ function AllProducts() {
                   <input
                     {...register("productprice", { required: true })}
                     type="number"
-                    placeholder="Type Your Email"
+                    placeholder="Product Price"
                     className="input input-bordered w-full max-w-xs"
                   />
                   {errors.productprice?.type === "required" && (
@@ -153,7 +168,7 @@ function AllProducts() {
                   <textarea
                     {...register("prdescription", { required: true })}
                     className="textarea textarea-bordered w-full"
-                    placeholder="Write..."
+                    placeholder="Write Product Description"
                   ></textarea>
                   {errors.prdescription?.type === "required" && (
                     <p role="alert" className="text-red-500">
@@ -174,35 +189,39 @@ function AllProducts() {
                     </div>
                   </div>
                 )}
-                <div>
-                  <div className="flex items-center justify-center w-full">
-                    <label
-                      {...getRootProps()}
-                      htmlFor="dropzone-file"
-                      className="flex flex-col items-center justify-center w-full h-44 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600"
-                    >
-                      <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                        <HiOutlineCloudUpload
-                          size={40}
-                          className="text-gray-500"
-                        />
-                        <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
-                          <span className="font-semibold">Click to upload</span>{" "}
-                          or drag and drop
-                        </p>
-                        <p className="text-xs text-gray-500 dark:text-gray-400">
-                          SVG, PNG, JPG or GIF (MAX. 800x400px)
-                        </p>
-                      </div>
-                      <input {...getInputProps()} />
-                    </label>
+                {!files && (
+                  <div>
+                    <div className="flex items-center justify-center w-full">
+                      <label
+                        {...getRootProps()}
+                        htmlFor="dropzone-file"
+                        className="flex flex-col items-center justify-center w-full h-44 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600"
+                      >
+                        <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                          <HiOutlineCloudUpload
+                            size={40}
+                            className="text-gray-500"
+                          />
+                          <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
+                            <span className="font-semibold">
+                              Click to upload
+                            </span>{" "}
+                            or drag and drop
+                          </p>
+                          <p className="text-xs text-gray-500 dark:text-gray-400">
+                            SVG, PNG, JPG or GIF (MAX. 800x400px)
+                          </p>
+                        </div>
+                        <input {...getInputProps()} />
+                      </label>
+                    </div>
+                    {fileError && (
+                      <p className="text-red-500" role="alert">
+                        {fileError}
+                      </p>
+                    )}
                   </div>
-                  {fileError && (
-                    <p className="text-red-500" role="alert">
-                      {fileError}
-                    </p>
-                  )}
-                </div>
+                )}
 
                 <button
                   className="btn btn-primary gap-2 flex items-center justify-center  w-full max-w-xs"
@@ -214,6 +233,12 @@ function AllProducts() {
               </form>
             </div>
           )}
+        </div>
+        <div className="grid lg:grid-cols-4 gap-4">
+          {products &&
+            products.map((product) => (
+              <ProductCard key={product._id} product={product} />
+            ))}
         </div>
       </div>
     </div>
