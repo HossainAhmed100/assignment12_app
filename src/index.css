@@ -14,3 +14,11 @@
   box-shadow: 0 0 20px 0px #b3cdf740;
   border-radius: 10px;
 }
+
+.hero_bg{
+  background-size: cover;
+  height: 70vh;
+  background-repeat: no-repeat;
+  background-attachment: scroll;
+  background-image: url("Utility/icon/car_bg.png")
+}
