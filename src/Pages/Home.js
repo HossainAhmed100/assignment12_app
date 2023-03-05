@@ -1,6 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
 import React from "react";
 import axios from "../axios";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Pagination } from "swiper";
 import ProductCard from "../Components/ProductCard/ProductCard";
 import { BsArrowRightShort, BsFillBookmarkStarFill } from "react-icons/bs";
 import { AiOutlineFundProjectionScreen } from "react-icons/ai";
@@ -41,7 +43,7 @@ function Home() {
       </div>
       <div className="py-8 container mx-auto">
         <h1 className="text-center text-4xl py-4 font-bold">Our New Product</h1>
-        <div className="grid xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 gap-4">
+        <div className="grid xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2">
           {products &&
             products.map((product) => (
               <ProductCard key={product._id} product={product} />
@@ -79,13 +81,43 @@ function Home() {
         </div>
       </div>
       <div className="bg-slate-100 p-20">
+        <h1 className="text-center text-4xl mb-8 font-bold">
+          Our Clients Reviews
+        </h1>
         <div className="container mx-auto">
-          <div className="flex items-center justify-center gap-10">
-            <ReviewCard />
-            <ReviewCard />
-            <ReviewCard />
-            <ReviewCard />
-          </div>
+          <Swiper
+            slidesPerView={3}
+            spaceBetween={20}
+            loop={true}
+            centeredSlides={false}
+            pagination={{
+              clickable: true,
+            }}
+            modules={[Pagination]}
+            className="mySwiper p-8"
+          >
+            <SwiperSlide>
+              <ReviewCard />
+            </SwiperSlide>
+            <SwiperSlide>
+              <ReviewCard />
+            </SwiperSlide>
+            <SwiperSlide>
+              <ReviewCard />
+            </SwiperSlide>
+            <SwiperSlide>
+              <ReviewCard />
+            </SwiperSlide>
+            <SwiperSlide>
+              <ReviewCard />
+            </SwiperSlide>
+            <SwiperSlide>
+              <ReviewCard />
+            </SwiperSlide>
+            <SwiperSlide>
+              <ReviewCard />
+            </SwiperSlide>
+          </Swiper>
         </div>
       </div>
     </div>

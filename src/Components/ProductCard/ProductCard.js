@@ -10,7 +10,7 @@ function ProductCard({ product }) {
     availablequantity,
   } = product;
   return (
-    <div className=" bg-base-100 flex flex-col items-center justify-between custom_box">
+    <div className=" bg-base-100 m-2 flex flex-col items-center justify-between custom_box">
       <div className="px-10 pt-10">
         <img
           src={imgUrl}
