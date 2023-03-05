@@ -49,33 +49,33 @@ function Home() {
               <ProductCard key={product._id} product={product} />
             ))}
         </div>
-        <div className="text-center py-4">
-          <button className="btn flex items-center justify-center gap-2 btn-primary">
+        <div className="w-full  py-4">
+          <button className="btn mx-auto flex items-center justify-center gap-2 btn-primary">
             <span>View All Product </span>
             <BsArrowRightShort size={25} />
           </button>
         </div>
       </div>
       <div className="p-10 bg-primary">
-        <div className="divide-x container mx-auto grid grid-cols-4">
-          <div className="p-10 text-center flex items-center justify-center flex-col gap-4 text-white">
-            <AiOutlineFundProjectionScreen size={100} />
-            <h1 className="text-5xl font-bold">6K+</h1>
-            <span className="text-base">Completed Projects</span>
+        <div className="md:divide-x divide-y md:divide-y-0 container mx-auto grid md:grid-cols-4 grid-cols-1">
+          <div className="p-6 text-center flex items-center justify-center flex-col gap-4 text-white">
+            <AiOutlineFundProjectionScreen size={80} />
+            <h1 className="text-3xl font-bold">60K+</h1>
+            <span className="text-base">Completed Order</span>
           </div>
-          <div className="p-10 text-center flex items-center justify-center flex-col gap-4 text-white">
-            <HiOutlineUsers size={100} />
-            <h1 className="text-5xl font-bold">33K+</h1>
+          <div className="p-6 text-center flex items-center justify-center flex-col gap-4 text-white">
+            <HiOutlineUsers size={80} />
+            <h1 className="text-3xl font-bold">33K+</h1>
             <span className="text-base">Happy Customer</span>
           </div>
-          <div className="p-10 text-center flex items-center justify-center flex-col gap-4 text-white">
-            <GiTrophyCup size={100} />
-            <h1 className="text-5xl font-bold">20K+</h1>
+          <div className="p-6 text-center flex items-center justify-center flex-col gap-4 text-white">
+            <GiTrophyCup size={80} />
+            <h1 className="text-3xl font-bold">16+</h1>
             <span className="text-base">Award Winning</span>
           </div>
-          <div className="p-10 text-center flex items-center justify-center flex-col gap-4 text-white">
-            <BsFillBookmarkStarFill size={100} />
-            <h1 className="text-5xl font-bold">99%</h1>
+          <div className="p-6 text-center flex items-center justify-center flex-col gap-4 text-white">
+            <BsFillBookmarkStarFill size={80} />
+            <h1 className="text-3xl font-bold">99%</h1>
             <span className="text-base">Satisfaction Rate</span>
           </div>
         </div>
@@ -86,7 +86,24 @@ function Home() {
         </h1>
         <div className="container mx-auto">
           <Swiper
-            slidesPerView={3}
+            breakpoints={{
+              640: {
+                slidesPerView: 1,
+              },
+              768: {
+                slidesPerView: 1,
+              },
+              1024: {
+                slidesPerView: 2,
+              },
+              1280: {
+                slidesPerView: 3,
+              },
+              1536: {
+                slidesPerView: 4,
+              },
+            }}
+            slidesPerView={1}
             spaceBetween={20}
             loop={true}
             centeredSlides={false}
@@ -94,7 +111,7 @@ function Home() {
               clickable: true,
             }}
             modules={[Pagination]}
-            className="mySwiper p-8"
+            className="mySwiper "
           >
             <SwiperSlide>
               <ReviewCard />
