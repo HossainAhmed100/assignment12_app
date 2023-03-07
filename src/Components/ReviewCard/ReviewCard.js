@@ -3,7 +3,7 @@ import { TiStarFullOutline } from "react-icons/ti";
 import avatar from "../../Utility/icon/logo.png";
 function ReviewCard() {
   return (
-    <div className="relative mx-auto cursor-pointer px-8 w-80 flex items-center justify-start flex-col rounded-2xl bg-white shadow-md">
+    <div className="relative mx-auto cursor-pointer px-8  flex items-center justify-start flex-col rounded-2xl bg-white custom_box">
       <div className="avatar left-8 -top-8 absolute">
         <div className="w-16 rounded-full ring ring-slate-100 ring-offset-base-100 ring-offset-2">
           <img src={avatar} alt="" />

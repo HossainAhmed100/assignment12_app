@@ -2,13 +2,18 @@ import { useQuery } from "@tanstack/react-query";
 import React from "react";
 import axios from "../axios";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Pagination } from "swiper";
+import { Autoplay, Pagination } from "swiper";
 import ProductCard from "../Components/ProductCard/ProductCard";
 import { BsArrowRightShort, BsFillBookmarkStarFill } from "react-icons/bs";
 import { AiOutlineFundProjectionScreen } from "react-icons/ai";
 import { HiOutlineUsers } from "react-icons/hi2";
 import { GiTrophyCup } from "react-icons/gi";
 import ReviewCard from "../Components/ReviewCard/ReviewCard";
+import c1 from "../Utility/icon/c1.png";
+import c2 from "../Utility/icon/c2.png";
+import c3 from "../Utility/icon/c3.png";
+import c4 from "../Utility/icon/c4.png";
+import c5 from "../Utility/icon/c5.png";
 
 function Home() {
   //Fetch All Product
@@ -80,7 +85,7 @@ function Home() {
           </div>
         </div>
       </div>
-      <div className="bg-slate-100 p-20">
+      <div className="bg-white py-20 px-5">
         <h1 className="text-center text-4xl mb-8 font-bold">
           Our Clients Reviews
         </h1>
@@ -88,30 +93,20 @@ function Home() {
           <Swiper
             breakpoints={{
               640: {
-                slidesPerView: 1,
-              },
-              768: {
-                slidesPerView: 1,
-              },
-              1024: {
                 slidesPerView: 2,
               },
-              1280: {
+              1024: {
                 slidesPerView: 3,
-              },
-              1536: {
-                slidesPerView: 4,
               },
             }}
             slidesPerView={1}
-            spaceBetween={20}
+            spaceBetween={10}
             loop={true}
-            centeredSlides={false}
             pagination={{
               clickable: true,
             }}
             modules={[Pagination]}
-            className="mySwiper "
+            className="reviewSlider"
           >
             <SwiperSlide>
               <ReviewCard />
@@ -133,6 +128,87 @@ function Home() {
             </SwiperSlide>
             <SwiperSlide>
               <ReviewCard />
+            </SwiperSlide>
+          </Swiper>
+        </div>
+      </div>
+      <div className="bg-slate-100">
+        <div className="container mx-auto p-8">
+          <Swiper
+            breakpoints={{
+              320: {
+                slidesPerView: 1,
+              },
+              768: {
+                slidesPerView: 3,
+              },
+              1024: {
+                slidesPerView: 4,
+              },
+              1440: {
+                slidesPerView: 5,
+              },
+            }}
+            slidesPerView={1}
+            centeredSlides={false}
+            autoplay={{
+              delay: 2500,
+              disableOnInteraction: false,
+            }}
+            loop={true}
+            modules={[Autoplay]}
+            className=""
+            spaceBetween={10}
+          >
+            <SwiperSlide>
+              <div className="w-52 mx-auto  hover:bg-white duration-200 hover:shadow-sm rounded-md cursor-pointer p-4">
+                <img src={c1} alt="" />
+              </div>
+            </SwiperSlide>
+            <SwiperSlide>
+              <div className="w-52 mx-auto  hover:bg-white duration-300 hover:shadow-sm rounded-md cursor-pointer p-4">
+                <img src={c2} alt="" />
+              </div>
+            </SwiperSlide>
+            <SwiperSlide>
+              <div className="w-52 mx-auto  hover:bg-white duration-300 hover:shadow-sm rounded-md cursor-pointer p-4">
+                <img src={c3} alt="" />
+              </div>
+            </SwiperSlide>
+            <SwiperSlide>
+              <div className="w-52 mx-auto  hover:bg-white duration-300 hover:shadow-sm rounded-md cursor-pointer p-4">
+                <img src={c4} alt="" />
+              </div>
+            </SwiperSlide>
+            <SwiperSlide>
+              <div className="w-52 mx-auto  hover:bg-white duration-300 hover:shadow-sm rounded-md cursor-pointer p-4">
+                <img src={c5} alt="" />
+              </div>
+            </SwiperSlide>
+            <SwiperSlide>
+              <div className="w-52 mx-auto  hover:bg-white duration-200 hover:shadow-sm rounded-md cursor-pointer p-4">
+                <img src={c1} alt="" />
+              </div>
+            </SwiperSlide>
+            <SwiperSlide>
+              <div className="w-52 mx-auto  hover:bg-white duration-300 hover:shadow-sm rounded-md cursor-pointer p-4">
+                <img src={c2} alt="" />
+              </div>
+            </SwiperSlide>
+            <SwiperSlide>
+              <div className="w-52 mx-auto  hover:bg-white duration-300 hover:shadow-sm rounded-md cursor-pointer p-4">
+                <img src={c3} alt="" />
+              </div>
+            </SwiperSlide>
+            <SwiperSlide>
+              <div className="w-52 mx-auto  hover:bg-white duration-300 hover:shadow-sm rounded-md cursor-pointer p-4">
+                <img src={c4} alt="" />
+              </div>
+            </SwiperSlide>
+            <SwiperSlide>
+              <div className="w-52 mx-auto  hover:bg-white duration-300 hover:shadow-sm rounded-md cursor-pointer p-4">
+                <img src={c5} alt="" />
+              </div>
             </SwiperSlide>
           </Swiper>
         </div>
