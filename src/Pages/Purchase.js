@@ -1,7 +1,21 @@
+import { useQuery } from "@tanstack/react-query";
+import axios from "../axios";
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
+import LodingBar from "../Components/LodingBar/LodingBar";
 
-function ProductCard({ product }) {
+function Purchase() {
+  const { id } = useParams();
+  const { data: product = [], isLoading } = useQuery({
+    queryKey: ["singleProduct"],
+    queryFn: async () => {
+      const res = await axios.get(`singleProduct/${id}`);
+      return res.data;
+    },
+  });
+  if (isLoading) {
+    return <LodingBar />;
+  }
   const {
     imgUrl,
     minorderquantity,
@@ -42,4 +56,4 @@ function ProductCard({ product }) {
   );
 }
 
-export default ProductCard;
+export default Purchase;
