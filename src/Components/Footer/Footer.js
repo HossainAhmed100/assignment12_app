@@ -21,14 +21,16 @@ function Footer() {
             </div>
             <p>Quality car parts at affordable prices</p>
           </div>
-          <p>We Accept</p>
-          <div className="text-3xl flex items-center justify-center gap-2">
-            <FaCcAmazonPay />
-            <FaPaypal />
-            <FaAlipay />
-            <FaCcApplePay />
-            <SiSamsungpay />
-            <SiLiberapay />
+          <div className="p-2 border-2 border-gray-400 rounded-md">
+            <p>We Accept</p>
+            <div className="text-3xl flex items-center justify-center gap-2">
+              <FaCcAmazonPay />
+              <FaPaypal />
+              <FaAlipay />
+              <FaCcApplePay />
+              <SiSamsungpay />
+              <SiLiberapay />
+            </div>
           </div>
         </div>
         <div>

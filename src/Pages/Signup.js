@@ -8,6 +8,8 @@ import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import UseHealmet from "../Hooks/UseHealmet";
 import { AuthContext } from "../Context/AuthProvider";
+import axios from "../axios";
+import { toast } from "react-toastify";
 function Signup() {
   const { createNewUser, upadteUser } = useContext(AuthContext);
   const navigate = useNavigate();
@@ -17,16 +19,34 @@ function Signup() {
     formState: { errors },
     handleSubmit,
   } = useForm();
+
+  // Register New User
   const onSubmit = async (data) => {
     const name = data.name;
     const email = data.email;
     const password = data.password;
+    const phone = data.phone;
+    const address = data.address;
+    const userInfo = { name, email, phone, address, role: "User" };
     await createNewUser(name, email, password)
       .then((userCredential) => {
         const users = userCredential.user;
         if (users.uid) {
           userUpadtep(name).then(() => {
-            navigate("/");
+            const newuser = async () => {
+              await axios
+                .post("addNewUser", { userInfo })
+                .then((res) => {
+                  if (res.data.acknowledged) {
+                    navigate("/");
+                    toast.success("Account Created Succeed!");
+                  }
+                })
+                .catch((errors) => {
+                  toast.error("Somthing is Wrong!");
+                });
+            };
+            newuser();
           });
         }
       })
@@ -44,7 +64,7 @@ function Signup() {
     <div>
       <UseHealmet title={"Signup Page"} />
       <div className="container mx-auto">
-        <div className="lg:p-20 p-4 flex items-center justify-center">
+        <div className="lg:py-10 p-4 flex items-center justify-center">
           <form
             onSubmit={handleSubmit(onSubmit)}
             className="space-y-3 bg-white p-8 custom_box w-96"
@@ -75,6 +95,34 @@ function Signup() {
               {errors.email?.type === "required" && (
                 <p role="alert" className="text-red-500">
                   Email is required
+                </p>
+              )}
+            </div>
+            <div className="form-control">
+              <label>Address *</label>
+              <input
+                {...register("address", { required: true })}
+                type="text"
+                placeholder="Type Your address"
+                className="input input-bordered w-full max-w-xs"
+              />
+              {errors.address?.type === "required" && (
+                <p role="alert" className="text-red-500">
+                  Address is required
+                </p>
+              )}
+            </div>
+            <div className="form-control">
+              <label>Phone *</label>
+              <input
+                {...register("phone", { required: true })}
+                type="number"
+                placeholder="Type Your phone Number"
+                className="input input-bordered w-full max-w-xs"
+              />
+              {errors.phone?.type === "required" && (
+                <p role="alert" className="text-red-500">
+                  Phone is required
                 </p>
               )}
             </div>

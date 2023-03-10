@@ -5,6 +5,7 @@ import {
   signOut,
   updateProfile,
 } from "firebase/auth";
+import axios from "../axios";
 import React, { createContext, useEffect, useState } from "react";
 import auth from "../firebase.init";
 export const AuthContext = createContext();
@@ -34,7 +35,14 @@ function AuthProvider({ children }) {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       if (currentUser) {
-        setUser(currentUser);
+        const serverUser = async () => {
+          const email = currentUser.email;
+          const url = `signleUser/${email}`;
+          await axios.get(url).then((res) => {
+            setUser(res.data);
+          });
+        };
+        serverUser();
       }
     });
     return () => unsubscribe();
