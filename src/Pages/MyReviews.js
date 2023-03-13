@@ -31,7 +31,6 @@ function MyReviews() {
   });
   //loading Animation
   if (loding || isLoading) {
-    console.log("user is und");
     return <LodingBar />;
   }
 
@@ -53,17 +52,13 @@ function MyReviews() {
   return (
     <div>
       <div className="lg:p-10 p-4">
-        {isOPEN ? (
-          <button
-            onClick={() => setIsOPEN(!isOPEN)}
-            className="btn btn-primary flex items-center justify-center"
-          >
-            <MdAddCircle size={25} />
-            <span className="ml-2">Add New Product</span>
-          </button>
-        ) : (
-          ""
-        )}
+        <button
+          onClick={() => setIsOPEN(!isOPEN)}
+          className="btn btn-primary flex items-center justify-center"
+        >
+          <MdAddCircle size={25} />
+          <span className="ml-2">Add New Product</span>
+        </button>
         {isOPEN && (
           <div className="bg-white p-8 custom_box w-96">
             <div className="flex items-center justify-between">

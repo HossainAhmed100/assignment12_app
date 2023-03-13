@@ -37,7 +37,6 @@ function UserProfile() {
 
   //loading Animation
   if (loding || user === undefined || isLoading) {
-    console.log("user is und");
     return <LodingBar />;
   }
 
