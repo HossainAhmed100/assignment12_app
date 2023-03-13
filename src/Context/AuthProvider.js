@@ -5,15 +5,33 @@ import {
   signOut,
   updateProfile,
 } from "firebase/auth";
-import axios from "../axios";
 import React, { createContext, useEffect, useState } from "react";
 import auth from "../firebase.init";
 export const AuthContext = createContext();
 
 function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
+  const [serverUser, setServerUser] = useState(null);
+  const [loding, setLoding] = useState(true);
 
-  const createNewUser = async (name, email, password) => {
+  // User Observer
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      setUser(currentUser);
+      if (currentUser.email) {
+        const url = `http://localhost:5000/signleUser/${currentUser.email}`;
+        fetch(url)
+          .then((res) => res.json())
+          .then((data) => {
+            setServerUser(data);
+            setLoding(false);
+          });
+      }
+    });
+    return () => unsubscribe();
+  }, []);
+
+  const createNewUser = async (email, password) => {
     return createUserWithEmailAndPassword(auth, email, password);
   };
 
@@ -31,24 +49,15 @@ function AuthProvider({ children }) {
     return await signOut(auth);
   };
 
-  // User Observer
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      if (currentUser) {
-        const serverUser = async () => {
-          const email = currentUser.email;
-          const url = `signleUser/${email}`;
-          await axios.get(url).then((res) => {
-            setUser(res.data);
-          });
-        };
-        serverUser();
-      }
-    });
-    return () => unsubscribe();
-  }, []);
-
-  const authinfo = { user, createNewUser, loginUser, upadteUser, logoutUser };
+  const authinfo = {
+    user,
+    createNewUser,
+    loding,
+    loginUser,
+    upadteUser,
+    serverUser,
+    logoutUser,
+  };
   return (
     <AuthContext.Provider value={authinfo}>{children}</AuthContext.Provider>
   );

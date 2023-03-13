@@ -24,8 +24,8 @@ function Purchase() {
         .get(url)
         .then((res) => {
           if (res.status === 200) {
-            setLoading(false);
             setProduct(res.data);
+            setLoading(false);
           }
         })
         .catch((error) => console.log(error));
@@ -95,7 +95,7 @@ function Purchase() {
               <label className="label">Name</label>
               <input
                 type="text"
-                value={user && user.displayName}
+                defaultValue={user?.displayName || ""}
                 disabled
                 placeholder="Type Your Name"
                 className="input input-bordered w-full max-w-xs"
@@ -105,7 +105,7 @@ function Purchase() {
               <label className="label">Email</label>
               <input
                 type="email"
-                value={user && user.email}
+                defaultValue={user?.email || ""}
                 disabled
                 placeholder="Type Your Email"
                 className="input input-bordered w-full max-w-xs"
