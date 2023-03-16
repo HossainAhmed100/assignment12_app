@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import React from "react";
+import React, { useContext, useState } from "react";
 import axios from "../axios";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Pagination } from "swiper";
@@ -14,8 +14,13 @@ import c2 from "../Utility/icon/c2.png";
 import c3 from "../Utility/icon/c3.png";
 import c4 from "../Utility/icon/c4.png";
 import c5 from "../Utility/icon/c5.png";
+import { AuthContext } from "../Context/AuthProvider";
+import LodingBar from "../Components/LodingBar/LodingBar";
 
 function Home() {
+  const { user } = useContext(AuthContext);
+  const [loading, setLoading] = useState(true);
+
   //Fetch All Product
   const { data: products = [] } = useQuery({
     queryKey: ["allproducts"],
@@ -24,6 +29,22 @@ function Home() {
       return res.data;
     },
   });
+
+  // Fetch All Product
+  const url = `/allreviews/${user?.email}`;
+  const { data: reviews = [] } = useQuery({
+    queryKey: ["allreviews"],
+    queryFn: async () => {
+      const res = await axios.get(url);
+      setLoading(false);
+      return res.data;
+    },
+  });
+
+  //loading Animation
+  if (loading) {
+    return <LodingBar />;
+  }
 
   return (
     <div>
@@ -100,7 +121,7 @@ function Home() {
               },
             }}
             slidesPerView={1}
-            spaceBetween={10}
+            spaceBetween={40}
             loop={true}
             pagination={{
               clickable: true,
@@ -108,27 +129,11 @@ function Home() {
             modules={[Pagination]}
             className="reviewSlider"
           >
-            <SwiperSlide>
-              <ReviewCard />
-            </SwiperSlide>
-            <SwiperSlide>
-              <ReviewCard />
-            </SwiperSlide>
-            <SwiperSlide>
-              <ReviewCard />
-            </SwiperSlide>
-            <SwiperSlide>
-              <ReviewCard />
-            </SwiperSlide>
-            <SwiperSlide>
-              <ReviewCard />
-            </SwiperSlide>
-            <SwiperSlide>
-              <ReviewCard />
-            </SwiperSlide>
-            <SwiperSlide>
-              <ReviewCard />
-            </SwiperSlide>
+            {reviews.map((review) => (
+              <SwiperSlide key={review._id}>
+                <ReviewCard review={review} />
+              </SwiperSlide>
+            ))}
           </Swiper>
         </div>
       </div>

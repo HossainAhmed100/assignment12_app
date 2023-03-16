@@ -2,47 +2,55 @@ import { useQuery } from "@tanstack/react-query";
 import axios from "../axios";
 import React, { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
-import { MdAddCircle, MdClose, MdOutlineFileUpload } from "react-icons/md";
+import { MdAddCircle, MdClose } from "react-icons/md";
+import { VscFeedback } from "react-icons/vsc";
 import { toast } from "react-toastify";
 import LodingBar from "../Components/LodingBar/LodingBar";
 import { AuthContext } from "../Context/AuthProvider";
 import UseHealmet from "../Hooks/UseHealmet";
 import ReviewCard from "../Components/ReviewCard/ReviewCard";
+import { FaStar } from "react-icons/fa";
 
 function UserReviews() {
   const [isOPEN, setIsOPEN] = useState(false);
-  const { serverUser } = useContext(AuthContext);
+  const [loading, setLoading] = useState(true);
+  const [rating, setRating] = useState(null);
+  const [starHover, steStarHover] = useState(null);
+  const { serverUser, user } = useContext(AuthContext);
   const {
     register,
     reset,
     formState: { errors },
     handleSubmit,
   } = useForm();
-
   // Fetch All Product
-  const {
-    data: reviews = [],
-    refetch,
-    isLoading,
-  } = useQuery({
+  const url = `/allreviews/${user?.email}`;
+  const { data: reviews = [], refetch } = useQuery({
     queryKey: ["allreviews"],
     queryFn: async () => {
-      const res = await axios.get(`allreviews/${serverUser?.email}`);
+      const res = await axios.get(url);
+      setLoading(false);
       return res.data;
     },
   });
 
   //loading Animation
-  if (isLoading) {
+  if (loading) {
     return <LodingBar />;
   }
+
+  const fromClose = () => {
+    setIsOPEN(!isOPEN);
+    setRating(null);
+  };
 
   // Add New Product
   const onSubmit = async (data) => {
     const text = data.reviews;
     const email = serverUser.email;
     const userId = serverUser._id;
-    const reviews = { text, email, userId };
+    const userName = serverUser.name;
+    const reviews = { userName, text, rating, email, userId };
     const url = `addnewreviews/${serverUser?.email}`;
     await axios
       .post(url, { reviews })
@@ -50,7 +58,7 @@ function UserReviews() {
         if (res.data.acknowledged) {
           reset();
           refetch();
-          toast.success("Product Added Succeed!");
+          toast.success("Reviews Added Succeed!");
         }
       })
       .catch((error) => console.log(error));
@@ -58,20 +66,20 @@ function UserReviews() {
   return (
     <div>
       <UseHealmet title={"My Reviews"} />
-      <div className="lg:p-10 p-4">
+      <div className="lg:py-10 py-86">
         {!isOPEN && (
           <button
-            onClick={() => setIsOPEN(!isOPEN)}
+            onClick={() => fromClose()}
             className="btn btn-primary flex items-center justify-center"
           >
             <MdAddCircle size={25} />
-            <span className="ml-2">Add New Product</span>
+            <span className="ml-2">Add New Reviews</span>
           </button>
         )}
         {isOPEN && (
           <div className="bg-white p-8 custom_box w-96">
             <div className="flex items-center justify-between">
-              <h1 className="text-xl font-bold text-center">Add New item</h1>
+              <h1 className="text-xl font-bold text-center">Add New Reviews</h1>
               <button
                 onClick={() => setIsOPEN(!isOPEN)}
                 className="btn btn-ghost text-end"
@@ -84,32 +92,64 @@ function UserReviews() {
               className="space-y-3 w-full"
             >
               <div className="form-control">
-                <label>Product Description *</label>
+                <label>Write Reviews *</label>
                 <textarea
-                  {...register("prdescription", { required: true })}
+                  {...register("reviews", { required: true })}
                   className="textarea textarea-bordered w-full"
-                  placeholder="Write Product Description"
+                  placeholder="Write..."
                 ></textarea>
-                {errors.prdescription?.type === "required" && (
+                {errors.reviews?.type === "required" && (
                   <p role="alert" className="text-red-500">
-                    Product Description is required
+                    Plz Write Something
                   </p>
                 )}
+              </div>
+              <div className="form-control py-4">
+                <label>Rating*</label>
+                <div className="flex items-center justify-start">
+                  {[...Array(5)].map((start, i) => {
+                    const ratingValue = i + 1;
+                    return (
+                      <label key={ratingValue}>
+                        <input
+                          onClick={() => setRating(ratingValue)}
+                          className="hidden"
+                          type="radio"
+                          name="rating"
+                          defaultValue={ratingValue}
+                        />
+                        <FaStar
+                          onMouseEnter={() => steStarHover(ratingValue)}
+                          onMouseLeave={() => steStarHover(null)}
+                          className="cursor-pointer"
+                          color={
+                            ratingValue <= (starHover || rating)
+                              ? "#ffc107"
+                              : "#e4e5e9"
+                          }
+                          size={40}
+                        />
+                      </label>
+                    );
+                  })}
+                </div>
               </div>
 
               <button
                 className="btn btn-primary gap-2 flex items-center justify-center  w-full max-w-xs"
                 type="submit"
               >
-                <MdOutlineFileUpload size={23} />
-                <span>UPLOAD</span>
+                <VscFeedback size={23} />
+                <span>SUBMIT</span>
               </button>
             </form>
           </div>
         )}
       </div>
-      <div className="grid xl:grid-cols-3 lg:grid-cols-2 grid-cols-1 gap-4 sm:grid-cols-2">
-        {reviews && reviews.map((review) => <ReviewCard key={review._id} />)}
+      <div className="grid xl:grid-cols-3 lg:grid-cols-2 grid-cols-1 gap-4 sm:grid-cols-2 mt-20">
+        {reviews.map((review) => (
+          <ReviewCard key={review._id} review={review} />
+        ))}
       </div>
     </div>
   );

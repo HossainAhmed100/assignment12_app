@@ -8,6 +8,7 @@ import axios from "../axios";
 import { toast } from "react-toastify";
 import { useQuery } from "@tanstack/react-query";
 import ProductCard from "../Components/ProductCard/ProductCard";
+import LodingBar from "../Components/LodingBar/LodingBar";
 function AllProducts() {
   const [isOPEN, setIsOPEN] = useState(false);
   const [files, setFiles] = useState(null);
@@ -29,13 +30,22 @@ function AllProducts() {
   } = useForm();
 
   //Fetch All Product
-  const { data: products = [], refetch } = useQuery({
+  const {
+    data: products = [],
+    refetch,
+    isLoading,
+  } = useQuery({
     queryKey: ["allproducts"],
     queryFn: async () => {
       const res = await axios.get("/allproducts");
       return res.data;
     },
   });
+
+  //loading Animation
+  if (isLoading) {
+    return <LodingBar />;
+  }
 
   // Add New Product
   const onSubmit = async (data) => {
