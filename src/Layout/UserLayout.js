@@ -19,7 +19,7 @@ function UserLayout() {
         </div>
         <div className="drawer-side">
           <label htmlFor="my-drawer-2" className="drawer-overlay"></label>
-          <ul className="menu p-4 space-y-2 w-80 bg-base-100 text-base-content border-r-2">
+          <ul className="menu p-4 space-y-2 w-80 text-base-content">
             <li>
               <NavLink to="/user/dashboard">Dashboard</NavLink>
             </li>

@@ -13,7 +13,6 @@ import { FaStar } from "react-icons/fa";
 
 function UserReviews() {
   const [isOPEN, setIsOPEN] = useState(false);
-  const [loading, setLoading] = useState(true);
   const [rating, setRating] = useState(null);
   const [starHover, steStarHover] = useState(null);
   const { serverUser, user } = useContext(AuthContext);
@@ -25,17 +24,20 @@ function UserReviews() {
   } = useForm();
   // Fetch All Product
   const url = `/allreviews/${user?.email}`;
-  const { data: reviews = [], refetch } = useQuery({
+  const {
+    data: reviews = [],
+    refetch,
+    isLoading,
+  } = useQuery({
     queryKey: ["allreviews"],
     queryFn: async () => {
       const res = await axios.get(url);
-      setLoading(false);
       return res.data;
     },
   });
 
   //loading Animation
-  if (loading) {
+  if (isLoading) {
     return <LodingBar />;
   }
 
@@ -94,13 +96,19 @@ function UserReviews() {
               <div className="form-control">
                 <label>Write Reviews *</label>
                 <textarea
-                  {...register("reviews", { required: true })}
+                  {...register("reviews", {
+                    required: { value: true, message: "Plz Write Something" },
+                    minLength: {
+                      value: 200,
+                      message: "Write Minimun 200 Character",
+                    },
+                  })}
                   className="textarea textarea-bordered w-full"
                   placeholder="Write..."
                 ></textarea>
-                {errors.reviews?.type === "required" && (
+                {errors.reviews && (
                   <p role="alert" className="text-red-500">
-                    Plz Write Something
+                    {errors.reviews.message}
                   </p>
                 )}
               </div>
@@ -147,9 +155,10 @@ function UserReviews() {
         )}
       </div>
       <div className="grid xl:grid-cols-3 lg:grid-cols-2 grid-cols-1 gap-4 sm:grid-cols-2 mt-20">
-        {reviews.map((review) => (
-          <ReviewCard key={review._id} review={review} />
-        ))}
+        {reviews &&
+          reviews.map((review) => (
+            <ReviewCard key={review._id} review={review} />
+          ))}
       </div>
     </div>
   );

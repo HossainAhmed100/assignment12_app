@@ -1,9 +1,10 @@
-import axios from "../axios";
 import React, { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import axios from "../axios";
 import LodingBar from "../Components/LodingBar/LodingBar";
 import { useForm } from "react-hook-form";
 import { AuthContext } from "../Context/AuthProvider";
+import { toast } from "react-toastify";
 
 function Purchase() {
   const { id } = useParams();
@@ -50,15 +51,40 @@ function Purchase() {
   } = product;
 
   // Submit Order
-  const onSubmit = (data) => {
-    const name = user.displayName;
-    const email = user.email;
-    const phone = data.phone;
+  const onSubmit = async (data) => {
+    const userName = user.displayName;
+    const userEmail = user.email;
+    const userPhone = data.phone;
     const productId = _id;
-    const address = data.address;
+    const userAddress = data.address;
     const orderQuantity = data.order_quanriry;
-    const order = { productId, name, email, phone, address, orderQuantity };
+    const paymentStatus = true;
+    const prTrnxID = null;
+    const orderStatus = false;
+    const totalPrice = orderQuantity * productprice;
+    const order = {
+      productId,
+      productname,
+      userName,
+      userEmail,
+      prTrnxID,
+      orderStatus,
+      userPhone,
+      totalPrice,
+      paymentStatus,
+      userAddress,
+      orderQuantity,
+    };
     console.log(order);
+    await axios
+      .post("placeNewOrder", { order })
+      .then((res) => {
+        if (res.data.acknowledged) {
+          toast.success("Order Place Succeded!");
+        }
+        console.log(res.data);
+      })
+      .catch((error) => console.log(error));
   };
 
   return (
