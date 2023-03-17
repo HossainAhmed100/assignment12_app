@@ -33,12 +33,16 @@ function UserOrderTable({
         )}
       </td>
       <td>
-        <button
-          onClick={() => orderPay(item._id)}
-          className="btn-primary btn rounded-md btn-sm"
-        >
-          Pay now
-        </button>
+        {item?.paymentStatus ? (
+          <button className="btn-success btn rounded-md btn-sm">PAID</button>
+        ) : (
+          <button
+            onClick={() => orderPay(item._id)}
+            className="btn-primary btn rounded-md btn-sm"
+          >
+            Pay now
+          </button>
+        )}
       </td>
       <td>
         <button

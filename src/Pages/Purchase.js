@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import axios from "../axios";
 import LodingBar from "../Components/LodingBar/LodingBar";
 import { useForm } from "react-hook-form";
@@ -8,6 +8,7 @@ import { toast } from "react-toastify";
 
 function Purchase() {
   const { id } = useParams();
+  const navigate = useNavigate();
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const { user } = useContext(AuthContext);
@@ -58,7 +59,7 @@ function Purchase() {
     const productId = _id;
     const userAddress = data.address;
     const orderQuantity = data.order_quanriry;
-    const paymentStatus = true;
+    const paymentStatus = false;
     const prTrnxID = null;
     const orderStatus = false;
     const totalPrice = orderQuantity * productprice;
@@ -81,6 +82,7 @@ function Purchase() {
       .then((res) => {
         if (res.data.acknowledged) {
           toast.success("Order Place Succeded!");
+          navigate("/user/order");
         }
         console.log(res.data);
       })
