@@ -3,7 +3,7 @@ import React from "react";
 function UserInfoModal({ item }) {
   const { userName, userAddress, userPhone, userEmail } = item;
   return (
-    <div>
+    <div className="modal_z">
       <input type="checkbox" id="userInfoModal" className="modal-toggle" />
       <div className="modal">
         <div className="modal-box">

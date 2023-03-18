@@ -13,7 +13,7 @@ function UserOrderTable({
       <th>{index + 1}</th>
       <td>{item?.userName}</td>
       <td>{item?.productname}</td>
-      <td>{item?.prTrnxID}</td>
+      <td>{item?.prTrnxID ? item?.prTrnxID : "Payment Not Completed"}</td>
       <td>{priceConverter(item?.orderQuantity)} PCS</td>
       <td>{priceConverter(item?.totalPrice)}$</td>
       <td>
@@ -34,7 +34,7 @@ function UserOrderTable({
       </td>
       <td>
         {item?.paymentStatus ? (
-          <button className="btn-success btn rounded-md btn-sm">PAID</button>
+          <button className="btn-success rounded-md btn-sm">PAID</button>
         ) : (
           <button
             onClick={() => orderPay(item._id)}
@@ -46,6 +46,7 @@ function UserOrderTable({
       </td>
       <td>
         <button
+          disabled={item.paymentStatus}
           onClick={() => deleteOrder(item._id)}
           className="btn-error btn rounded-md btn-sm"
         >

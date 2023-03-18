@@ -1,25 +1,19 @@
 import React from "react";
 import { NavLink, Outlet } from "react-router-dom";
 import NavBar from "../Components/NavBar/NavBar";
-
+import { CgClose } from "react-icons/cg";
 function UserLayout() {
   return (
     <div>
       <NavBar />
       <div className="drawer drawer-mobile">
         <input id="my-drawer-2" type="checkbox" className="drawer-toggle" />
-        <div className="drawer-content py-6 px-10">
-          <label
-            htmlFor="my-drawer-2"
-            className="btn btn-primary drawer-button lg:hidden"
-          >
-            Open drawer
-          </label>
+        <div className="drawer-content">
           <Outlet />
         </div>
-        <div className="drawer-side">
+        <div className="drawer-side ">
           <label htmlFor="my-drawer-2" className="drawer-overlay"></label>
-          <ul className="menu p-4 space-y-2 w-80 text-base-content">
+          <ul className="menu drawer_z p-4 w-80 md:bg-base-50 bg-base-100   text-base-content">
             <li>
               <NavLink to="/user/dashboard">Dashboard</NavLink>
             </li>

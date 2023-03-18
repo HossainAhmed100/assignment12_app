@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
 import { AuthContext } from "../Context/AuthProvider";
-import avatar from "../Utility/icon/logo.png";
+import avatar from "../Utility/icon/man.png";
 import { HiPencil, HiOutlineX } from "react-icons/hi";
 import { useForm } from "react-hook-form";
 import axios from "../axios";
@@ -72,19 +72,19 @@ function UserProfile() {
                 <img src={avatar} alt="Shoes" className="rounded-xl w-24" />
               </figure>
               <div className="card-body items-start">
-                <h2 className="card-title">
+                <h2>
                   <span>Name : </span> {name}
                 </h2>
-                <h2 className="card-title">
+                <h2>
                   <span>Role : </span> {role}
                 </h2>
-                <h2 className="card-title">
+                <h2>
                   <span>Email : </span> {email}
                 </h2>
-                <h2 className="card-title">
+                <h2>
                   <span>Phone : </span> {phone}
                 </h2>
-                <h2 className="card-title">
+                <h2>
                   <span>Address : </span> {address}
                 </h2>
                 <div className="card-actions w-full mt-4">

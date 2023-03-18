@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { AuthContext } from "../../Context/AuthProvider";
 import logo from "../../Utility/icon/logo.png";
+import avatar from "../../Utility/icon/man.png";
 
 function NavBar() {
   const { user, logoutUser } = useContext(AuthContext);
@@ -20,7 +21,7 @@ function NavBar() {
         <div className="navbar">
           <div className="navbar-start">
             <div className="dropdown">
-              <label tabIndex={0} className="btn btn-ghost lg:hidden">
+              <label htmlFor="my-drawer-2" className="btn btn-ghost lg:hidden">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   className="h-5 w-5"
@@ -76,7 +77,7 @@ function NavBar() {
               <div className="dropdown dropdown-end">
                 <label tabIndex={0} className="btn btn-ghost btn-circle avatar">
                   <div className="w-10 ring rounded-full">
-                    <img src={logo} alt="" />
+                    <img src={avatar} alt="" />
                   </div>
                 </label>
                 <ul

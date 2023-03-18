@@ -15,6 +15,12 @@
   border-radius: 10px;
 }
 
+.drawer_z{
+  z-index: 50 !important;
+}
+.modal_z{
+  z-index: 40 !important;
+}
 
 
 .hero_bg{
