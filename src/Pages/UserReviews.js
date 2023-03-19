@@ -15,15 +15,24 @@ function UserReviews() {
   const [isOPEN, setIsOPEN] = useState(false);
   const [rating, setRating] = useState(null);
   const [starHover, steStarHover] = useState(null);
-  const { serverUser, user } = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
   const {
     register,
     reset,
     formState: { errors },
     handleSubmit,
   } = useForm();
+
+  // Load User information by email
+  const { data: userData = [] } = useQuery({
+    queryKey: ["signleUser"],
+    queryFn: async () => {
+      const res = await axios.get(`signleUser/${user?.email}`);
+      return res.data;
+    },
+  });
+
   // Fetch All Product
-  const url = `/allreviews/${user?.email}`;
   const {
     data: reviews = [],
     refetch,
@@ -31,7 +40,7 @@ function UserReviews() {
   } = useQuery({
     queryKey: ["allreviews"],
     queryFn: async () => {
-      const res = await axios.get(url);
+      const res = await axios.get(`allreviews/${user?.email}`);
       return res.data;
     },
   });
@@ -49,11 +58,11 @@ function UserReviews() {
   // Add New Product
   const onSubmit = async (data) => {
     const text = data.reviews;
-    const email = serverUser.email;
-    const userId = serverUser._id;
-    const userName = serverUser.name;
+    const email = userData?.email;
+    const userId = userData?._id;
+    const userName = userData?.name;
     const reviews = { userName, text, rating, email, userId };
-    const url = `addnewreviews/${serverUser?.email}`;
+    const url = `addnewreviews/${user?.email}`;
     await axios
       .post(url, { reviews })
       .then((res) => {
@@ -66,9 +75,9 @@ function UserReviews() {
       .catch((error) => console.log(error));
   };
   return (
-    <div>
+    <div className="lg:py-10 p-8 lg:px-10 px-8">
       <UseHealmet title={"My Reviews"} />
-      <div className="lg:py-10 py-86">
+      <div>
         {!isOPEN && (
           <button
             onClick={() => fromClose()}
@@ -154,7 +163,7 @@ function UserReviews() {
           </div>
         )}
       </div>
-      <div className="grid xl:grid-cols-3 lg:grid-cols-2 grid-cols-1 gap-4 sm:grid-cols-2 mt-20">
+      <div className="grid xl:grid-cols-3 md:grid-cols-2 sm:grid-cols-2 grid-cols-1 gap-4 mt-20">
         {reviews &&
           reviews.map((review) => (
             <ReviewCard key={review._id} review={review} />

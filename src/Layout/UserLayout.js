@@ -1,7 +1,6 @@
 import React from "react";
 import { NavLink, Outlet } from "react-router-dom";
 import NavBar from "../Components/NavBar/NavBar";
-import { CgClose } from "react-icons/cg";
 function UserLayout() {
   return (
     <div>
@@ -13,7 +12,7 @@ function UserLayout() {
         </div>
         <div className="drawer-side ">
           <label htmlFor="my-drawer-2" className="drawer-overlay"></label>
-          <ul className="menu drawer_z p-4 w-80 md:bg-base-50 bg-base-100   text-base-content">
+          <ul className="menu space-y-2 p-4 w-80 md:bg-base-50 bg-base-100   text-base-content">
             <li>
               <NavLink to="/user/dashboard">Dashboard</NavLink>
             </li>

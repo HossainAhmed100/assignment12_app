@@ -5,7 +5,7 @@ function ReviewCard({ review }) {
   const { text, userName, rating } = review;
   return (
     <div className="mx-auto cursor-pointer mb-10">
-      <div className="px-8  flex items-center justify-start flex-col rounded-2xl bg-white custom_box">
+      <div className="px-8 flex items-center justify-start flex-col rounded-2xl bg-white custom_box">
         <div className="w-16 mx-auto relative -mt-10">
           <img className="-mt-1" src={avatar} alt="Cookie Icon SVG" />
         </div>

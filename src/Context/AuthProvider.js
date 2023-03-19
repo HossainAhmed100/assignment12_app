@@ -11,24 +11,16 @@ export const AuthContext = createContext();
 
 function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
-  const [serverUser, setServerUser] = useState(null);
   const [loding, setLoding] = useState(true);
 
   // User Observer
+  // User Observer
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+    const unSubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
-      if (currentUser.email) {
-        const url = `http://localhost:5000/signleUser/${currentUser.email}`;
-        fetch(url)
-          .then((res) => res.json())
-          .then((data) => {
-            setServerUser(data);
-            setLoding(false);
-          });
-      }
+      setLoding(false);
     });
-    return () => unsubscribe();
+    return () => unSubscribe();
   }, []);
 
   const createNewUser = async (email, password) => {
@@ -55,7 +47,6 @@ function AuthProvider({ children }) {
     loding,
     loginUser,
     upadteUser,
-    serverUser,
     logoutUser,
   };
   return (

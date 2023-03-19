@@ -10,7 +10,7 @@ import { toast } from "react-toastify";
 
 function UserProfile() {
   const [isUpdate, setIsUpdate] = useState(true);
-  const { user, loding } = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
 
   // Load User information by email
   const {
@@ -25,9 +25,6 @@ function UserProfile() {
     },
   });
 
-  // Extraxt user info
-  const { email, phone, address, name, role } = userData;
-
   // User form action
   const {
     register,
@@ -36,14 +33,16 @@ function UserProfile() {
   } = useForm();
 
   //loading Animation
-  if (loding || user === undefined || isLoading) {
+  if (isLoading) {
     return <LodingBar />;
   }
 
   // Update User Profile
   const onSubmit = async (data) => {
-    const url = `updateUser/${email}`;
+    const url = `updateUser/${userData?.email}`;
     const names = data.name;
+    const email = userData?.email;
+    const role = userData?.role;
     const phones = data.phone;
     const addresss = data.address;
     const userInfo = { names, phones, addresss, email, role };
@@ -52,7 +51,6 @@ function UserProfile() {
       .then((res) => {
         if (res.data.modifiedCount === 1) {
           refetch();
-
           toast.success("Profile Updated!");
           setIsUpdate(true);
         }
@@ -73,19 +71,19 @@ function UserProfile() {
               </figure>
               <div className="card-body items-start">
                 <h2>
-                  <span>Name : </span> {name}
+                  <span>Name : </span> {userData?.name}
                 </h2>
                 <h2>
-                  <span>Role : </span> {role}
+                  <span>Role : </span> {userData?.role}
                 </h2>
                 <h2>
-                  <span>Email : </span> {email}
+                  <span>Email : </span> {userData?.email}
                 </h2>
                 <h2>
-                  <span>Phone : </span> {phone}
+                  <span>Phone : </span> {userData?.phone}
                 </h2>
                 <h2>
-                  <span>Address : </span> {address}
+                  <span>Address : </span> {userData?.address}
                 </h2>
                 <div className="card-actions w-full mt-4">
                   <button
