@@ -6,6 +6,7 @@ function AOrderTable({
   setModalInfo,
   priceConverter,
   orderPay,
+  confirmOrder,
   deleteOrder,
 }) {
   return (
@@ -34,9 +35,19 @@ function AOrderTable({
       </td>
       <td>
         {item?.paymentStatus ? (
-          <button className="btn-success btn rounded-md btn-sm">Approve</button>
+          <button
+            onClick={() => confirmOrder(item._id)}
+            className="btn-success btn rounded-md btn-sm"
+          >
+            Approve
+          </button>
         ) : (
-          <button className="btn-error btn rounded-md btn-sm">Cancel</button>
+          <button
+            onClick={() => deleteOrder(item._id)}
+            className="btn-error btn rounded-md btn-sm"
+          >
+            Cancel
+          </button>
         )}
       </td>
     </tr>

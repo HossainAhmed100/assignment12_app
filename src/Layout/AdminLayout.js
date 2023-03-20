@@ -17,13 +17,16 @@ function AdminLayout() {
               <NavLink to="/admin/dashboard">Dashboard</NavLink>
             </li>
             <li>
-              <NavLink to="/admin/allproducts">All Products</NavLink>
+              <NavLink to="/admin/allproducts">Manage Products</NavLink>
             </li>
             <li>
-              <NavLink to="/admin/order">All Orders</NavLink>
+              <NavLink to="/admin/order">Manage Orders</NavLink>
             </li>
             <li>
-              <NavLink to="/admin/reviews">All Reviews</NavLink>
+              <NavLink to="/admin/reviews">Manage Reviews</NavLink>
+            </li>
+            <li>
+              <NavLink to="/admin/alluser">Manage User</NavLink>
             </li>
             <li>
               <NavLink to="/admin/profile">My Account</NavLink>

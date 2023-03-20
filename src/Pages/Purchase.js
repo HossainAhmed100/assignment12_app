@@ -76,7 +76,6 @@ function Purchase() {
       userAddress,
       orderQuantity,
     };
-    console.log(order);
     await axios
       .post("placeNewOrder", { order })
       .then((res) => {

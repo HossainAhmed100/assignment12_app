@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-function ProductCard({ product }) {
+function ProductCard({ product, children }) {
   const {
     imgUrl,
     minorderquantity,
@@ -37,6 +37,7 @@ function ProductCard({ product }) {
         <Link to={`/purchase/${_id}`} className="btn w-full btn-primary">
           Buy Now
         </Link>
+        {children && children}
       </div>
     </div>
   );

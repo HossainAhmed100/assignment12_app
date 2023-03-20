@@ -89,6 +89,10 @@ const router = createBrowserRouter([
         element: <AReviews />,
       },
       {
+        path: "/admin/alluser",
+        element: <AOrder />,
+      },
+      {
         path: "/admin/order",
         element: <AOrder />,
       },

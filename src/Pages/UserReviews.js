@@ -70,6 +70,20 @@ function UserReviews() {
       })
       .catch((error) => console.log(error));
   };
+
+  // Delete Reviews
+  const deleteReviews = async (id) => {
+    await axios
+      .delete(`allreviews/${id}`)
+      .then((res) => {
+        if (res.data.deletedCount === 1) {
+          toast.success("1 Review Deleted!");
+          refetch();
+        }
+      })
+      .catch((error) => console.log(error));
+  };
+
   return (
     <div className="lg:py-10 p-8 lg:px-10 px-8">
       <UseHealmet title={"My Reviews"} />
@@ -164,7 +178,12 @@ function UserReviews() {
           reviews.map((review) => (
             <ReviewCard key={review._id} review={review}>
               <div className="border-t w-full py-4 border-gray-300">
-                <button className="btn btn-primary">DELETE</button>
+                <button
+                  onClick={() => deleteReviews(review._id)}
+                  className="btn btn-primary"
+                >
+                  DELETE
+                </button>
               </div>
             </ReviewCard>
           ))}

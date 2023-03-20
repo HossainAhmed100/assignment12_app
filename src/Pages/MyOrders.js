@@ -10,7 +10,7 @@ import UserOrderTable from "../Components/UserOrderTable/UserOrderTable";
 function MyOrders() {
   const { user, loding } = useContext(AuthContext);
   const [modalInfo, setModalInfo] = useState(null);
-  const { data: order = [] } = useQuery({
+  const { data: order = [], refetch } = useQuery({
     queryKey: ["allOrder", user],
     queryFn: async () => {
       const res = await axios.get(`allOrder/${user?.email}`);
@@ -21,8 +21,30 @@ function MyOrders() {
   if (loding) {
     return <LodingBar />;
   }
-  const deleteOrder = (infos) => {
-    Swal.fire(infos);
+
+  // Cancel Order
+  const deleteOrder = (id) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, Cancel it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        const deleteO = async () => {
+          await axios.delete(`allOrder/${id}`).then((res) => {
+            if (res.data.deletedCount === 1) {
+              Swal.fire("Cancel!", "Your Order has been Cancel.", "success");
+              refetch();
+            }
+          });
+        };
+        deleteO();
+      }
+    });
   };
   const orderPay = (infos) => {
     Swal.fire(infos);

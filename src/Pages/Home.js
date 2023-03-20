@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import React, { useContext } from "react";
+import React from "react";
 import axios from "../axios";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Pagination } from "swiper";
@@ -14,34 +14,30 @@ import c2 from "../Utility/icon/c2.png";
 import c3 from "../Utility/icon/c3.png";
 import c4 from "../Utility/icon/c4.png";
 import c5 from "../Utility/icon/c5.png";
-import { AuthContext } from "../Context/AuthProvider";
 import LodingBar from "../Components/LodingBar/LodingBar";
 import { Link } from "react-router-dom";
 
 function Home() {
-  const { user, loding } = useContext(AuthContext);
-
   //Fetch All Product
-  const { data: products = [] } = useQuery({
-    queryKey: ["allproducts", user],
+  const { data: products = [], isLoading } = useQuery({
+    queryKey: ["allproducts"],
     queryFn: async () => {
       const res = await axios.get("/allproducts");
       return res.data;
     },
   });
 
-  // Fetch All Product
-  const url = `/allreviews/${user?.email}`;
+  // Fetch All reviews
   const { data: reviews = [] } = useQuery({
-    queryKey: ["allreviews", user],
+    queryKey: ["allreviews"],
     queryFn: async () => {
-      const res = await axios.get(url);
+      const res = await axios.get("allreviews");
       return res.data;
     },
   });
 
   //loading Animation
-  if (loding) {
+  if (isLoading) {
     return <LodingBar />;
   }
 
@@ -70,9 +66,11 @@ function Home() {
         <h1 className="text-center text-4xl py-4 font-bold">Our New Product</h1>
         <div className="grid xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2">
           {products &&
-            products.map((product) => (
-              <ProductCard key={product._id} product={product} />
-            ))}
+            products
+              .slice(0, 4)
+              .map((product) => (
+                <ProductCard key={product._id} product={product} />
+              ))}
         </div>
         <div className="w-full text-center py-4">
           <Link to="/allproducts" className="btn  btn-primary">
@@ -128,11 +126,12 @@ function Home() {
             modules={[Pagination]}
             className="reviewSlider"
           >
-            {reviews.map((review) => (
-              <SwiperSlide key={review._id}>
-                <ReviewCard review={review} />
-              </SwiperSlide>
-            ))}
+            {reviews &&
+              reviews.slice(0, 6).map((review) => (
+                <SwiperSlide key={review._id}>
+                  <ReviewCard review={review} />
+                </SwiperSlide>
+              ))}
           </Swiper>
         </div>
       </div>

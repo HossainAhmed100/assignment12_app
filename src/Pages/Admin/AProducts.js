@@ -87,6 +87,19 @@ function AProducts() {
     }
   };
 
+  // Delete Product
+  const deleteProduct = async (id) => {
+    await axios
+      .delete(`allreviews/${id}`)
+      .then((res) => {
+        if (res.data.deletedCount === 1) {
+          toast.success("1 Review Deleted!");
+          refetch();
+        }
+      })
+      .catch((error) => console.log(error));
+  };
+
   return (
     <div>
       <UseHealmet title={"Admin - Manage Product"} />
@@ -248,7 +261,16 @@ function AProducts() {
         <div className="grid lg:grid-cols-4 gap-4">
           {products &&
             products.map((product) => (
-              <ProductCard key={product._id} product={product} />
+              <ProductCard key={product._id} product={product}>
+                <div className="border-t w-full py-4 border-gray-300">
+                  <button
+                    onClick={() => deleteProduct(product._id)}
+                    className="btn btn-primary"
+                  >
+                    DELETE
+                  </button>
+                </div>
+              </ProductCard>
             ))}
         </div>
       </div>
