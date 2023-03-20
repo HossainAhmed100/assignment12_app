@@ -10,15 +10,11 @@ import { toast } from "react-toastify";
 
 function UserProfile() {
   const [isUpdate, setIsUpdate] = useState(true);
-  const { user } = useContext(AuthContext);
+  const { user, loding } = useContext(AuthContext);
 
   // Load User information by email
-  const {
-    data: userData = [],
-    isLoading,
-    refetch,
-  } = useQuery({
-    queryKey: ["signleUser"],
+  const { data: userData = [], refetch } = useQuery({
+    queryKey: ["signleUser", user],
     queryFn: async () => {
       const res = await axios.get(`signleUser/${user?.email}`);
       return res.data;
@@ -32,8 +28,7 @@ function UserProfile() {
     handleSubmit,
   } = useForm();
 
-  //loading Animation
-  if (isLoading) {
+  if (loding) {
     return <LodingBar />;
   }
 
@@ -61,7 +56,7 @@ function UserProfile() {
   };
 
   return (
-    <div>
+    <div className="py-10">
       <div className="container mx-auto">
         <div className="flex items-center justify-center">
           {isUpdate ? (

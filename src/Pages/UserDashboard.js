@@ -7,13 +7,14 @@ import { useQuery } from "@tanstack/react-query";
 import axios from "../axios";
 import LodingBar from "../Components/LodingBar/LodingBar";
 function UserDashboard() {
-  const { user } = useContext(AuthContext);
+  const { user, loding } = useContext(AuthContext);
 
-  const { data = [], isLoading } = useQuery({
-    queryKey: ["getUserOrder", user],
+  // Get User Order
+  const { data = [] } = useQuery({
+    queryKey: ["allOrder", user],
     queryFn: async () => {
       try {
-        const res = await axios.get(`getUserOrder/${user?.email}`);
+        const res = await axios.get(`allOrder/${user?.email}`);
         return res.data;
       } catch (error) {
         console.log(error);
@@ -21,6 +22,7 @@ function UserDashboard() {
     },
   });
 
+  // Get User Reviews
   const { data: reviews = [] } = useQuery({
     queryKey: ["allreviews", user],
     queryFn: async () => {
@@ -33,16 +35,16 @@ function UserDashboard() {
     },
   });
 
-  //loading Animation
-  if (isLoading) {
+  // Loading Animation
+  if (loding) {
     return <LodingBar />;
   }
 
   return (
-    <div>
+    <div className="p-10">
       <UseHealmet title={"User Dashboard"} />
       <div>
-        <div className="grid gap-4 grid-cols-1 md:grid-cols-2 xl:grid-cols-4 mt-10">
+        <div className="grid gap-4 grid-cols-1 md:grid-cols-2 xl:grid-cols-4">
           <div className="relative hover:border-blue-400 duration-300 block rounded-sm cursor-pointer p-4 custom_box sm:p-6 lg:p-8">
             <div className="flex items-center gap-4">
               <GiCardboardBoxClosed size={40} />

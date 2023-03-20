@@ -1,7 +1,7 @@
 import React from "react";
 import { FaStar } from "react-icons/fa";
 import avatar from "../../Utility/icon/man.png";
-function ReviewCard({ review }) {
+function ReviewCard({ review, children }) {
   const { text, userName, rating } = review;
   return (
     <div className="mx-auto cursor-pointer mb-10">
@@ -25,6 +25,7 @@ function ReviewCard({ review }) {
             })}
           </div>
         </div>
+        {children && children}
       </div>
     </div>
   );

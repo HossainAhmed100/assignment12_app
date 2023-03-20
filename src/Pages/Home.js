@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 import axios from "../axios";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Pagination } from "swiper";
@@ -16,14 +16,14 @@ import c4 from "../Utility/icon/c4.png";
 import c5 from "../Utility/icon/c5.png";
 import { AuthContext } from "../Context/AuthProvider";
 import LodingBar from "../Components/LodingBar/LodingBar";
+import { Link } from "react-router-dom";
 
 function Home() {
-  const { user } = useContext(AuthContext);
-  const [loading, setLoading] = useState(true);
+  const { user, loding } = useContext(AuthContext);
 
   //Fetch All Product
   const { data: products = [] } = useQuery({
-    queryKey: ["allproducts"],
+    queryKey: ["allproducts", user],
     queryFn: async () => {
       const res = await axios.get("/allproducts");
       return res.data;
@@ -33,16 +33,15 @@ function Home() {
   // Fetch All Product
   const url = `/allreviews/${user?.email}`;
   const { data: reviews = [] } = useQuery({
-    queryKey: ["allreviews"],
+    queryKey: ["allreviews", user],
     queryFn: async () => {
       const res = await axios.get(url);
-      setLoading(false);
       return res.data;
     },
   });
 
   //loading Animation
-  if (loading) {
+  if (loding) {
     return <LodingBar />;
   }
 
@@ -75,11 +74,11 @@ function Home() {
               <ProductCard key={product._id} product={product} />
             ))}
         </div>
-        <div className="w-full  py-4">
-          <button className="btn mx-auto flex items-center justify-center gap-2 btn-primary">
+        <div className="w-full text-center py-4">
+          <Link to="/allproducts" className="btn  btn-primary">
             <span>View All Product </span>
             <BsArrowRightShort size={25} />
-          </button>
+          </Link>
         </div>
       </div>
       <div className="p-10 bg-primary">

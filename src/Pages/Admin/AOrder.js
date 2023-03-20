@@ -1,24 +1,22 @@
 import { useQuery } from "@tanstack/react-query";
-import axios from "../axios";
-import React, { useContext, useState } from "react";
+import axios from "../../axios";
+import React, { useState } from "react";
 import Swal from "sweetalert2";
-import { AuthContext } from "../Context/AuthProvider";
-import LodingBar from "../Components/LodingBar/LodingBar";
-import UserInfoModal from "../Components/Modal/UserInfoModal";
-import UserOrderTable from "../Components/UserOrderTable/UserOrderTable";
+import LodingBar from "../../Components/LodingBar/LodingBar";
+import AOrderTable from "../../Components/UserOrderTable/AOrderTable";
+import UserInfoModal from "../../Components/Modal/UserInfoModal";
 
-function MyOrders() {
-  const { user, loding } = useContext(AuthContext);
+function AOrder() {
   const [modalInfo, setModalInfo] = useState(null);
-  const { data: order = [] } = useQuery({
-    queryKey: ["allOrder", user],
+  const { data: order = [], isLoading } = useQuery({
+    queryKey: ["allOrder"],
     queryFn: async () => {
-      const res = await axios.get(`allOrder/${user?.email}`);
+      const res = await axios.get(`/allOrder`);
       return res.data;
     },
   });
   //loading Animation
-  if (loding) {
+  if (isLoading) {
     return <LodingBar />;
   }
   const deleteOrder = (infos) => {
@@ -53,7 +51,6 @@ function MyOrders() {
                 <th>Quantity</th>
                 <th>Total Price $</th>
                 <th>Delivery info</th>
-                <th>Order Status</th>
                 <th>Payment Status</th>
                 <th className="text-center">Actions</th>
               </tr>
@@ -61,7 +58,7 @@ function MyOrders() {
             <tbody>
               {order &&
                 order.map((item, index) => (
-                  <UserOrderTable
+                  <AOrderTable
                     key={item._id}
                     index={index}
                     orderPay={orderPay}
@@ -80,4 +77,4 @@ function MyOrders() {
   );
 }
 
-export default MyOrders;
+export default AOrder;

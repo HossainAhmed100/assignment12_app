@@ -15,7 +15,7 @@ function UserReviews() {
   const [isOPEN, setIsOPEN] = useState(false);
   const [rating, setRating] = useState(null);
   const [starHover, steStarHover] = useState(null);
-  const { user } = useContext(AuthContext);
+  const { user, loding } = useContext(AuthContext);
   const {
     register,
     reset,
@@ -25,7 +25,7 @@ function UserReviews() {
 
   // Load User information by email
   const { data: userData = [] } = useQuery({
-    queryKey: ["signleUser"],
+    queryKey: ["signleUser", user],
     queryFn: async () => {
       const res = await axios.get(`signleUser/${user?.email}`);
       return res.data;
@@ -33,12 +33,8 @@ function UserReviews() {
   });
 
   // Fetch All Product
-  const {
-    data: reviews = [],
-    refetch,
-    isLoading,
-  } = useQuery({
-    queryKey: ["allreviews"],
+  const { data: reviews = [], refetch } = useQuery({
+    queryKey: ["allreviews", user],
     queryFn: async () => {
       const res = await axios.get(`allreviews/${user?.email}`);
       return res.data;
@@ -46,7 +42,7 @@ function UserReviews() {
   });
 
   //loading Animation
-  if (isLoading) {
+  if (loding) {
     return <LodingBar />;
   }
 
@@ -166,7 +162,11 @@ function UserReviews() {
       <div className="grid xl:grid-cols-3 md:grid-cols-2 sm:grid-cols-2 grid-cols-1 gap-4 mt-20">
         {reviews &&
           reviews.map((review) => (
-            <ReviewCard key={review._id} review={review} />
+            <ReviewCard key={review._id} review={review}>
+              <div className="border-t w-full py-4 border-gray-300">
+                <button className="btn btn-primary">DELETE</button>
+              </div>
+            </ReviewCard>
           ))}
       </div>
     </div>
