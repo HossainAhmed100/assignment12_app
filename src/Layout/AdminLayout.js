@@ -12,7 +12,7 @@ function AdminLayout() {
         </div>
         <div className="drawer-side ">
           <label htmlFor="my-drawer-2" className="drawer-overlay"></label>
-          <ul className="menu space-y-2 p-4 w-80 md:bg-base-50 bg-base-100   text-base-content">
+          <ul className="menu space-y-2 border-r-2 p-4 w-80 md:bg-base-50 bg-base-100   text-base-content">
             <li>
               <NavLink to="/admin/dashboard">Dashboard</NavLink>
             </li>

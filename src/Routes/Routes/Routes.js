@@ -16,6 +16,7 @@ import NotFound from "../../Pages/NotFound";
 import Purchase from "../../Pages/Purchase";
 import Signup from "../../Pages/Signup";
 import UserDashboard from "../../Pages/UserDashboard";
+import UserPay from "../../Pages/UserPay";
 import UserProfile from "../../Pages/UserProfile";
 import UserReviews from "../../Pages/UserReviews";
 
@@ -65,6 +66,10 @@ const router = createBrowserRouter([
       {
         path: "/user/order",
         element: <MyOrders />,
+      },
+      {
+        path: "/user/payment/:id",
+        element: <UserPay />,
       },
       {
         path: "/user/profile",

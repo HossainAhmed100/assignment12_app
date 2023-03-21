@@ -14,7 +14,9 @@ function AOrderTable({
       <th>{index + 1}</th>
       <td>{item?.userName}</td>
       <td className="">{item?.productname}</td>
-      <td>{item?.prTrnxID ? item?.prTrnxID : "Payment Not Completed"}</td>
+      <td>
+        {item?.transactionId ? item?.transactionId : "Payment Not Completed"}
+      </td>
       <td>{priceConverter(item?.orderQuantity)} PCS</td>
       <td>{priceConverter(item?.totalPrice)}$</td>
       <td>

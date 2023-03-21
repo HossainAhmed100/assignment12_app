@@ -1,19 +1,29 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 function UserOrderTable({
   item,
   index,
   setModalInfo,
   priceConverter,
-  orderPay,
   deleteOrder,
 }) {
   return (
     <tr>
       <th>{index + 1}</th>
-      <td>{item?.userName}</td>
+      <td>
+        <div className="avatar">
+          <div className="mask rounded-md w-12 border-2 h-12">
+            <img
+              className="rounded-md"
+              src={item?.imgUrl}
+              alt="Avatar Tailwind CSS Component"
+            />
+          </div>
+        </div>
+      </td>
       <td>{item?.productname}</td>
-      <td>{item?.prTrnxID ? item?.prTrnxID : "Pay Before"}</td>
+      <td>{item?.transactionId ? item?.transactionId : "Pay Before"}</td>
       <td>{priceConverter(item?.orderQuantity)} PCS</td>
       <td>{priceConverter(item?.totalPrice)}$</td>
       <td>
@@ -36,12 +46,12 @@ function UserOrderTable({
         {item?.paymentStatus ? (
           <button className="btn-success rounded-md btn-sm">PAID</button>
         ) : (
-          <button
-            onClick={() => orderPay(item._id)}
+          <Link
+            to={`/user/payment/${item._id}`}
             className="btn-primary btn rounded-md btn-sm"
           >
             Pay now
-          </button>
+          </Link>
         )}
       </td>
       <td>

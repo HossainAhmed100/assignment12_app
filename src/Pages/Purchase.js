@@ -5,6 +5,7 @@ import LodingBar from "../Components/LodingBar/LodingBar";
 import { useForm } from "react-hook-form";
 import { AuthContext } from "../Context/AuthProvider";
 import { toast } from "react-toastify";
+import UseHealmet from "../Hooks/UseHealmet";
 
 function Purchase() {
   const { id } = useParams();
@@ -68,6 +69,7 @@ function Purchase() {
       productname,
       userName,
       userEmail,
+      imgUrl,
       prTrnxID,
       orderStatus,
       userPhone,
@@ -83,13 +85,13 @@ function Purchase() {
           toast.success("Order Place Succeded!");
           navigate("/user/order");
         }
-        console.log(res.data);
       })
       .catch((error) => console.log(error));
   };
 
   return (
     <div className="py-10 md:px-20 px-5">
+      <UseHealmet title={"Order Page"} />
       <div className="bg-base-100 flex items-center gap-4">
         <div className="w-96 bg-base-100 m-2 flex flex-col items-center justify-between">
           <div className="px-10 pt-10">
