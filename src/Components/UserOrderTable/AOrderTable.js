@@ -32,7 +32,7 @@ function AOrderTable({
         {item?.paymentStatus ? (
           <button className="btn-accent rounded-md btn-sm">PAID</button>
         ) : (
-          <button className="btn-error rounded-md btn-sm">Not paid</button>
+          <button className="btn-error rounded-md btn-sm">UNPAID</button>
         )}
       </td>
       <td>

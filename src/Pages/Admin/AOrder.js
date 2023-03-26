@@ -59,20 +59,17 @@ function AOrder() {
       confirmButtonText: "Yes, Approve it!",
     }).then((result) => {
       if (result.isConfirmed) {
-        const deleteO = async () => {
+        const approveOd = async () => {
           await axios.put(`approveOrder/${id}`).then((res) => {
-            if (res.data.deletedCount === 1) {
+            if (res.data.modifiedCount === 1) {
               Swal.fire("Approve!", "Order has been Approved.", "success");
               refetch();
             }
           });
         };
-        deleteO();
+        approveOd();
       }
     });
-  };
-  const orderPay = (infos) => {
-    Swal.fire(infos);
   };
 
   const priceConverter = (num) => {
@@ -110,7 +107,6 @@ function AOrder() {
                   <AOrderTable
                     key={item._id}
                     index={index}
-                    orderPay={orderPay}
                     deleteOrder={deleteOrder}
                     item={item}
                     confirmOrder={confirmOrder}

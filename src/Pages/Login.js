@@ -9,6 +9,7 @@ import { Link, useNavigate } from "react-router-dom";
 import UseHealmet from "../Hooks/UseHealmet";
 import { AuthContext } from "../Context/AuthProvider";
 import { toast } from "react-toastify";
+import axios from "../axios";
 function Login() {
   const [isOPEN, setIsOPEN] = useState(false);
   const { loginUser } = useContext(AuthContext);
@@ -24,8 +25,21 @@ function Login() {
     const email = data.email;
     const password = data.password;
     loginUser(email, password)
-      .then(() => {
-        navigate("/");
+      .then((result) => {
+        const user = result.user;
+        const currestUser = { email: user.email };
+
+        // Get JWT Token
+        axios
+          .post("jwt", { ...currestUser })
+          .then((res) => {
+            localStorage.setItem("token", res?.data?.token);
+            navigate("/");
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+
         toast.success("Log in Sucessed!");
       })
       .catch((error) => {

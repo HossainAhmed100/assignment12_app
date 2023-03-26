@@ -55,12 +55,10 @@ function UserPay() {
         if (res.data.matchedCount === 1) {
           navigate("/user/order");
         }
-        console.log(res.data);
       })
       .catch((error) => {
         console.log(error);
       });
-    console.log(data);
   };
 
   return (
