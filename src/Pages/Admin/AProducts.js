@@ -90,7 +90,7 @@ function AProducts() {
   // Delete Product
   const deleteProduct = async (id) => {
     await axios
-      .delete(`allreviews/${id}`)
+      .delete(`deleteProduct/${id}`)
       .then((res) => {
         if (res.data.deletedCount === 1) {
           toast.success("1 Review Deleted!");

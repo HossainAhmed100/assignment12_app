@@ -1,12 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import axios from "../axios";
 import { useNavigate, useParams } from "react-router-dom";
 import LodingBar from "../Components/LodingBar/LodingBar";
 import { useForm } from "react-hook-form";
 import UseHealmet from "../Hooks/UseHealmet";
+import { AuthContext } from "../Context/AuthProvider";
 
 function UserPay() {
   const { id } = useParams();
+  const { user } = useContext(AuthContext);
   const [order, setOrder] = useState(null);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
@@ -50,7 +52,7 @@ function UserPay() {
   const onSubmit = async (data) => {
     const transactionId = data.transactionId;
     await axios
-      .put(`paymentUpdate/${_id}`, { transactionId })
+      .put(`paymentUpdate/${user?.email}`, { transactionId, _id })
       .then((res) => {
         if (res.data.matchedCount === 1) {
           navigate("/user/order");

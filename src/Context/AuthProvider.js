@@ -1,7 +1,10 @@
 import {
   createUserWithEmailAndPassword,
+  GoogleAuthProvider,
   onAuthStateChanged,
+  sendPasswordResetEmail,
   signInWithEmailAndPassword,
+  signInWithPopup,
   signOut,
   updateProfile,
 } from "firebase/auth";
@@ -31,10 +34,20 @@ function AuthProvider({ children }) {
     return await signInWithEmailAndPassword(auth, email, password);
   };
 
+  // Social Login
+  const socialLogin = async () => {
+    const provider = new GoogleAuthProvider();
+    return await signInWithPopup(auth, provider);
+  };
+
   const upadteUser = (name) => {
     return updateProfile(auth.currentUser, {
       displayName: name,
     });
+  };
+
+  const resetPass = (email) => {
+    return sendPasswordResetEmail(auth, email);
   };
 
   const logoutUser = async () => {
@@ -45,7 +58,9 @@ function AuthProvider({ children }) {
     user,
     createNewUser,
     loding,
+    socialLogin,
     loginUser,
+    resetPass,
     upadteUser,
     logoutUser,
   };

@@ -1,13 +1,15 @@
 import { useQuery } from "@tanstack/react-query";
 import axios from "../../axios";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import Swal from "sweetalert2";
 import LodingBar from "../../Components/LodingBar/LodingBar";
 import AOrderTable from "../../Components/UserOrderTable/AOrderTable";
 import UserInfoModal from "../../Components/Modal/UserInfoModal";
+import { AuthContext } from "../../Context/AuthProvider";
 
 function AOrder() {
   const [modalInfo, setModalInfo] = useState(null);
+  const { user } = useContext(AuthContext);
   const {
     data: order = [],
     isLoading,
@@ -36,12 +38,15 @@ function AOrder() {
     }).then((result) => {
       if (result.isConfirmed) {
         const deleteO = async () => {
-          await axios.delete(`allOrder/${id}`).then((res) => {
-            if (res.data.deletedCount === 1) {
-              Swal.fire("Cancel!", "Order has been Cancel.", "success");
-              refetch();
-            }
-          });
+          await axios
+            .delete(`allOrder/${id}`)
+            .then((res) => {
+              if (res.data.deletedCount === 1) {
+                Swal.fire("Cancel!", "Order has been Cancel.", "success");
+                refetch();
+              }
+            })
+            .catch((error) => console.log(error));
         };
         deleteO();
       }
@@ -60,7 +65,7 @@ function AOrder() {
     }).then((result) => {
       if (result.isConfirmed) {
         const approveOd = async () => {
-          await axios.put(`approveOrder/${id}`).then((res) => {
+          await axios.put(`approveOrder/${user?.email}`, { id }).then((res) => {
             if (res.data.modifiedCount === 1) {
               Swal.fire("Approve!", "Order has been Approved.", "success");
               refetch();

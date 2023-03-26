@@ -11,7 +11,7 @@ function MyOrders() {
   const { user, loding } = useContext(AuthContext);
   const [modalInfo, setModalInfo] = useState(null);
   const { data: order = [], refetch } = useQuery({
-    queryKey: ["allOrder", user],
+    queryKey: ["allOrder", user?.email],
     queryFn: async () => {
       const res = await axios.get(`allOrder/${user?.email}`);
       return res.data;

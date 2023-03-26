@@ -79,7 +79,7 @@ function Purchase() {
       orderQuantity,
     };
     await axios
-      .post("placeNewOrder", { order })
+      .post(`placeNewOrder/${userEmail}`, { order })
       .then((res) => {
         if (res.data.acknowledged) {
           toast.success("Order Place Succeded!");

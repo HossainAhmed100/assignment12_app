@@ -9,6 +9,7 @@ import AProducts from "../../Pages/Admin/AProducts";
 import AReviews from "../../Pages/Admin/AReviews";
 import AllProducts from "../../Pages/AllProducts";
 import AllReviews from "../../Pages/AllReviews";
+import Forgatpassword from "../../Pages/Forgatpassword";
 import Home from "../../Pages/Home";
 import Login from "../../Pages/Login";
 import MyOrders from "../../Pages/MyOrders";
@@ -44,6 +45,10 @@ const router = createBrowserRouter([
       {
         path: "login",
         element: <Login />,
+      },
+      {
+        path: "forgatpassword",
+        element: <Forgatpassword />,
       },
       {
         path: "signup",
