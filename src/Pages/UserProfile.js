@@ -34,9 +34,9 @@ function UserProfile() {
 
   // Update User Profile
   const onSubmit = async (data) => {
-    const url = `updateUser/${userData?.email}`;
+    const url = `updateUser/${user?.email}`;
     const names = data.name;
-    const email = userData?.email;
+    const email = user?.email;
     const role = userData?.role;
     const phones = data.phone;
     const addresss = data.address;

@@ -16,6 +16,14 @@ function ADashboard() {
     },
   });
 
+  const { data: alluser = [] } = useQuery({
+    queryKey: ["alluser"],
+    queryFn: async () => {
+      const res = await axios.get("alluser");
+      return res.data;
+    },
+  });
+
   const { data: allOrder = [], isLoading } = useQuery({
     queryKey: ["allOrder"],
     queryFn: async () => {
@@ -55,7 +63,7 @@ function ADashboard() {
               <TiUser size={40} />
 
               <h3 className="text-3xl font-bold sm:text-4xl">
-                {allOrder.length}
+                {alluser.length}
               </h3>
             </div>
 

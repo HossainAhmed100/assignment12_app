@@ -7,6 +7,7 @@ import ADashboard from "../../Pages/Admin/ADashboard";
 import AOrder from "../../Pages/Admin/AOrder";
 import AProducts from "../../Pages/Admin/AProducts";
 import AReviews from "../../Pages/Admin/AReviews";
+import AUser from "../../Pages/Admin/AUser";
 import AllProducts from "../../Pages/AllProducts";
 import AllReviews from "../../Pages/AllReviews";
 import Forgatpassword from "../../Pages/Forgatpassword";
@@ -20,6 +21,8 @@ import UserDashboard from "../../Pages/UserDashboard";
 import UserPay from "../../Pages/UserPay";
 import UserProfile from "../../Pages/UserProfile";
 import UserReviews from "../../Pages/UserReviews";
+import AdminRoute from "../AdminRoute";
+import ProtectedRoute from "../ProtectedRoute";
 
 const router = createBrowserRouter([
   {
@@ -58,7 +61,11 @@ const router = createBrowserRouter([
   },
   {
     path: "/user",
-    element: <UserLayout />,
+    element: (
+      <ProtectedRoute>
+        <UserLayout />
+      </ProtectedRoute>
+    ),
     children: [
       {
         path: "/user/dashboard",
@@ -84,7 +91,11 @@ const router = createBrowserRouter([
   },
   {
     path: "/admin",
-    element: <AdminLayout />,
+    element: (
+      <AdminRoute>
+        <AdminLayout />
+      </AdminRoute>
+    ),
     children: [
       {
         path: "/admin/dashboard",
@@ -100,7 +111,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/admin/alluser",
-        element: <AOrder />,
+        element: <AUser />,
       },
       {
         path: "/admin/order",

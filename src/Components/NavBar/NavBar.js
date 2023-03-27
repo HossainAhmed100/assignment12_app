@@ -2,11 +2,13 @@ import React, { useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { AuthContext } from "../../Context/AuthProvider";
+import useAdmin from "../../Hooks/useAdmin";
 import logo from "../../Utility/icon/logo.png";
 import avatar from "../../Utility/icon/man.png";
 
 function NavBar() {
   const { user, logoutUser } = useContext(AuthContext);
+  const [isAdmin] = useAdmin(user?.email);
   const navigate = useNavigate();
   const handleUserLogOut = () => {
     logoutUser().then(() => {
@@ -80,28 +82,50 @@ function NavBar() {
                     <img src={avatar} alt="" />
                   </div>
                 </label>
-                <ul
-                  tabIndex={0}
-                  className="menu menu-compact space-y-1 dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52"
-                >
-                  <li>
-                    <Link to="/user/dashboard">Dashboard</Link>
-                  </li>
-                  <li>
-                    <Link to="/user/profile">Account</Link>
-                  </li>
-                  <li>
-                    <Link to="/user/order">My Orders</Link>
-                  </li>
-                  <li>
-                    <button
-                      onClick={handleUserLogOut}
-                      className="text-red-500 font-bol"
-                    >
-                      Logout
-                    </button>
-                  </li>
-                </ul>
+                {isAdmin ? (
+                  <ul
+                    tabIndex={0}
+                    className="menu menu-compact space-y-1 dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52"
+                  >
+                    <li>
+                      <Link to="/admin/dashboard">Dashboard</Link>
+                    </li>
+                    <li>
+                      <Link to="/admin/profile">Account</Link>
+                    </li>
+                    <li>
+                      <button
+                        onClick={handleUserLogOut}
+                        className="text-red-500 font-bol"
+                      >
+                        Logout
+                      </button>
+                    </li>
+                  </ul>
+                ) : (
+                  <ul
+                    tabIndex={0}
+                    className="menu menu-compact space-y-1 dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52"
+                  >
+                    <li>
+                      <Link to="/user/dashboard">Dashboard</Link>
+                    </li>
+                    <li>
+                      <Link to="/user/profile">Account</Link>
+                    </li>
+                    <li>
+                      <Link to="/user/order">My Orders</Link>
+                    </li>
+                    <li>
+                      <button
+                        onClick={handleUserLogOut}
+                        className="text-red-500 font-bol"
+                      >
+                        Logout
+                      </button>
+                    </li>
+                  </ul>
+                )}
               </div>
             ) : (
               <>

@@ -30,13 +30,13 @@ function AOrderTable({
       </td>
       <td>
         {item?.paymentStatus ? (
-          <button className="btn-accent rounded-md btn-sm">PAID</button>
+          <div className="badge badge-success  badge-lg">PAID</div>
         ) : (
           <button className="btn-error rounded-md btn-sm">UNPAID</button>
         )}
       </td>
       <td>
-        {item?.paymentStatus ? (
+        {item?.orderStatus === false ? (
           <button
             onClick={() => confirmOrder(item._id)}
             className="btn-success btn rounded-md btn-sm"
@@ -44,11 +44,8 @@ function AOrderTable({
             Approve
           </button>
         ) : (
-          <button
-            onClick={() => deleteOrder(item._id)}
-            className="btn-error btn rounded-md btn-sm"
-          >
-            Cancel
+          <button disabled className="btn-success btn rounded-md btn-sm">
+            Approve
           </button>
         )}
       </td>

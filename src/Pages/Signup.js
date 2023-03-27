@@ -1,9 +1,5 @@
 import React, { useContext, useState } from "react";
-import {
-  AiOutlineGoogle,
-  AiOutlineEye,
-  AiOutlineEyeInvisible,
-} from "react-icons/ai";
+import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import UseHealmet from "../Hooks/UseHealmet";
@@ -184,10 +180,6 @@ function Signup() {
               value="Signup"
             />
             <div className="divider">OR</div>
-            <button className="btn btn-outline w-full max-w-xs">
-              <AiOutlineGoogle size={25} />
-              <span className="mt-1">Signup with google</span>
-            </button>
             <div className="text-center">
               Alredy Have Account?
               <Link to="/login" className="link link-primary">
