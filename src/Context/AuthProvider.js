@@ -17,7 +17,6 @@ function AuthProvider({ children }) {
   const [loding, setLoding] = useState(true);
 
   // User Observer
-  // User Observer
   useEffect(() => {
     const unSubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
@@ -27,7 +26,7 @@ function AuthProvider({ children }) {
   }, []);
 
   const createNewUser = async (email, password) => {
-    return createUserWithEmailAndPassword(auth, email, password);
+    return await createUserWithEmailAndPassword(auth, email, password);
   };
 
   const loginUser = async (email, password) => {

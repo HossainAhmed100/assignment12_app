@@ -14,6 +14,9 @@ import { FaStar } from "react-icons/fa";
 function UserReviews() {
   const [isOPEN, setIsOPEN] = useState(false);
   const [rating, setRating] = useState(null);
+  const config = {
+    headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+  };
   const [starHover, steStarHover] = useState(null);
   const { user, loding } = useContext(AuthContext);
   const {
@@ -27,7 +30,7 @@ function UserReviews() {
   const { data: userData = [] } = useQuery({
     queryKey: ["signleUser", user],
     queryFn: async () => {
-      const res = await axios.get(`signleUser/${user?.email}`);
+      const res = await axios.get(`signleUser/${user?.email}`, config);
       return res.data;
     },
   });
@@ -36,7 +39,7 @@ function UserReviews() {
   const { data: reviews = [], refetch } = useQuery({
     queryKey: ["allreviews", user],
     queryFn: async () => {
-      const res = await axios.get(`allreviews/${user?.email}`);
+      const res = await axios.get(`allreviews/${user?.email}`, config);
       return res.data;
     },
   });
@@ -60,7 +63,7 @@ function UserReviews() {
     const reviews = { userName, text, rating, email, userId };
     const url = `addnewreviews/${user?.email}`;
     await axios
-      .post(url, { reviews })
+      .post(url, { reviews }, config)
       .then((res) => {
         if (res.data.acknowledged) {
           reset();
@@ -74,7 +77,7 @@ function UserReviews() {
   // Delete Reviews
   const deleteReviews = async (id) => {
     await axios
-      .delete(`allreviews/${id}`)
+      .delete(`allreviews/${id}`, config)
       .then((res) => {
         if (res.data.deletedCount === 1) {
           toast.success("1 Review Deleted!");

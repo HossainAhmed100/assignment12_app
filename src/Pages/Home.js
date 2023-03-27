@@ -18,11 +18,14 @@ import LodingBar from "../Components/LodingBar/LodingBar";
 import { Link } from "react-router-dom";
 
 function Home() {
+  const config = {
+    headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+  };
   //Fetch All Product
   const { data: products = [], isLoading } = useQuery({
     queryKey: ["allproducts"],
     queryFn: async () => {
-      const res = await axios.get("/allproducts");
+      const res = await axios.get("/allproducts", config);
       return res.data;
     },
   });
@@ -31,7 +34,7 @@ function Home() {
   const { data: reviews = [] } = useQuery({
     queryKey: ["allreviews"],
     queryFn: async () => {
-      const res = await axios.get("allreviews");
+      const res = await axios.get("allreviews", config);
       return res.data;
     },
   });

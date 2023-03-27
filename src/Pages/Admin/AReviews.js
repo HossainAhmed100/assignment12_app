@@ -8,6 +8,9 @@ import { RiMessage3Fill } from "react-icons/ri";
 import { toast } from "react-toastify";
 
 function AReviews() {
+  const config = {
+    headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+  };
   // Fetch All reviews
   const {
     data: reviews = [],
@@ -16,7 +19,7 @@ function AReviews() {
   } = useQuery({
     queryKey: ["allreviews"],
     queryFn: async () => {
-      const res = await axios.get("allreviews");
+      const res = await axios.get("allreviews", config);
       return res.data;
     },
   });
@@ -27,7 +30,7 @@ function AReviews() {
 
   const deleteReviews = async (id) => {
     await axios
-      .delete(`allreviews/${id}`)
+      .delete(`allreviews/${id}`, config)
       .then((res) => {
         if (res.data.deletedCount === 1) {
           toast.success("1 Review Deleted!");

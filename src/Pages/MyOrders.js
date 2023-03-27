@@ -9,11 +9,14 @@ import UserOrderTable from "../Components/UserOrderTable/UserOrderTable";
 
 function MyOrders() {
   const { user, loding } = useContext(AuthContext);
+  const config = {
+    headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+  };
   const [modalInfo, setModalInfo] = useState(null);
   const { data: order = [], refetch } = useQuery({
     queryKey: ["allOrder", user?.email],
     queryFn: async () => {
-      const res = await axios.get(`allOrder/${user?.email}`);
+      const res = await axios.get(`allOrder/${user?.email}`, config);
       return res.data;
     },
   });
@@ -35,7 +38,7 @@ function MyOrders() {
     }).then((result) => {
       if (result.isConfirmed) {
         const deleteO = async () => {
-          await axios.delete(`allOrder/${id}`).then((res) => {
+          await axios.delete(`allOrder/${id}`, config).then((res) => {
             if (res.data.deletedCount === 1) {
               Swal.fire("Cancel!", "Your Order has been Cancel.", "success");
               refetch();

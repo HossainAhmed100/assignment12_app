@@ -24,7 +24,7 @@ function Signup() {
     const phone = data.phone;
     const address = data.address;
     const userInfo = { name, email, phone, address, role: "User" };
-    await createNewUser(name, email, password)
+    await createNewUser(email, password)
       .then((userCredential) => {
         const users = userCredential.user;
         if (users.uid) {
@@ -34,7 +34,17 @@ function Signup() {
                 .post("addNewUser", { userInfo })
                 .then((res) => {
                   if (res.data.acknowledged) {
-                    navigate("/");
+                    const currestUser = { email: email };
+                    // Get JWT Token
+                    axios
+                      .post("jwt", { ...currestUser })
+                      .then((res) => {
+                        localStorage.setItem("token", res?.data?.token);
+                        navigate("/");
+                      })
+                      .catch((err) => {
+                        console.log(err);
+                      });
                     toast.success("Account Created Succeed!");
                   }
                 })

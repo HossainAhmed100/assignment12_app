@@ -10,13 +10,15 @@ import { toast } from "react-toastify";
 
 function UserProfile() {
   const [isUpdate, setIsUpdate] = useState(true);
+  const config = {
+    headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+  };
   const { user, loding } = useContext(AuthContext);
-
   // Load User information by email
   const { data: userData = [], refetch } = useQuery({
     queryKey: ["signleUser", user],
     queryFn: async () => {
-      const res = await axios.get(`signleUser/${user?.email}`);
+      const res = await axios.get(`signleUser/${user?.email}`, config);
       return res.data;
     },
   });

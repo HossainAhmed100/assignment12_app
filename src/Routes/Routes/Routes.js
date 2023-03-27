@@ -42,10 +42,6 @@ const router = createBrowserRouter([
         element: <AllReviews />,
       },
       {
-        path: "purchase/:id",
-        element: <Purchase />,
-      },
-      {
         path: "login",
         element: <Login />,
       },
@@ -74,6 +70,10 @@ const router = createBrowserRouter([
       {
         path: "/user/reviews",
         element: <UserReviews />,
+      },
+      {
+        path: "/user/purchase/:id",
+        element: <Purchase />,
       },
       {
         path: "/user/order",

@@ -1,8 +1,8 @@
 import React from "react";
 import lofos from "../../Utility/icon/man.png";
 
-function AdminUserTable({ user, index }) {
-  const { email, name, role, phone } = user;
+function AdminUserTable({ user, index, roleHandle }) {
+  const { email, name, role, phone, _id, address } = user;
   return (
     <tr>
       <th>{index}</th>
@@ -22,9 +22,24 @@ function AdminUserTable({ user, index }) {
         </div>
       </td>
       <td>{email}</td>
+      <td>{address}</td>
       <td>{phone}</td>
       <th>
-        <button className="btn btn-info btn-sm">details</button>
+        {role === "Admin" ? (
+          <button
+            onClick={() => roleHandle(_id, role)}
+            className="btn btn-error btn-sm"
+          >
+            Remove Admin
+          </button>
+        ) : (
+          <button
+            onClick={() => roleHandle(_id, role)}
+            className="btn btn-warning btn-sm"
+          >
+            Make Admin
+          </button>
+        )}
       </th>
     </tr>
   );

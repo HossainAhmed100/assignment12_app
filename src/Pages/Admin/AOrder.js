@@ -9,6 +9,9 @@ import { AuthContext } from "../../Context/AuthProvider";
 
 function AOrder() {
   const [modalInfo, setModalInfo] = useState(null);
+  const config = {
+    headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+  };
   const { user } = useContext(AuthContext);
   const {
     data: order = [],
@@ -17,7 +20,7 @@ function AOrder() {
   } = useQuery({
     queryKey: ["allOrder"],
     queryFn: async () => {
-      const res = await axios.get(`/allOrder`);
+      const res = await axios.get(`/allOrder`, config);
       return res.data;
     },
   });
@@ -39,7 +42,7 @@ function AOrder() {
       if (result.isConfirmed) {
         const deleteO = async () => {
           await axios
-            .delete(`allOrder/${id}`)
+            .delete(`allOrder/${id}`, config)
             .then((res) => {
               if (res.data.deletedCount === 1) {
                 Swal.fire("Cancel!", "Order has been Cancel.", "success");
@@ -65,12 +68,14 @@ function AOrder() {
     }).then((result) => {
       if (result.isConfirmed) {
         const approveOd = async () => {
-          await axios.put(`approveOrder/${user?.email}`, { id }).then((res) => {
-            if (res.data.modifiedCount === 1) {
-              Swal.fire("Approve!", "Order has been Approved.", "success");
-              refetch();
-            }
-          });
+          await axios
+            .put(`approveOrder/${user?.email}`, { id }, config)
+            .then((res) => {
+              if (res.data.modifiedCount === 1) {
+                Swal.fire("Approve!", "Order has been Approved.", "success");
+                refetch();
+              }
+            });
         };
         approveOd();
       }

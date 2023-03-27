@@ -8,13 +8,15 @@ import axios from "../axios";
 import LodingBar from "../Components/LodingBar/LodingBar";
 function UserDashboard() {
   const { user, loding } = useContext(AuthContext);
-
+  const config = {
+    headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+  };
   // Get User Order
   const { data = [] } = useQuery({
     queryKey: ["allOrder", user],
     queryFn: async () => {
       try {
-        const res = await axios.get(`allOrder/${user?.email}`);
+        const res = await axios.get(`allOrder/${user?.email}`, config);
         return res.data;
       } catch (error) {
         console.log(error);
@@ -27,7 +29,7 @@ function UserDashboard() {
     queryKey: ["allreviews", user],
     queryFn: async () => {
       try {
-        const res = await axios.get(`allreviews/${user?.email}`);
+        const res = await axios.get(`allreviews/${user?.email}`, config);
         return res.data;
       } catch (error) {
         console.log(error);

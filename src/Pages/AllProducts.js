@@ -5,11 +5,14 @@ import { useQuery } from "@tanstack/react-query";
 import ProductCard from "../Components/ProductCard/ProductCard";
 import LodingBar from "../Components/LodingBar/LodingBar";
 function AllProducts() {
+  const config = {
+    headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+  };
   //Fetch All Product
   const { data: products, isLoading } = useQuery({
     queryKey: ["allproducts"],
     queryFn: async () => {
-      const res = await axios.get("/allproducts");
+      const res = await axios.get("/allproducts", config);
       return res.data;
     },
   });

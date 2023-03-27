@@ -11,6 +11,9 @@ import ProductCard from "../../Components/ProductCard/ProductCard";
 import UseHealmet from "../../Hooks/UseHealmet";
 
 function AProducts() {
+  const config = {
+    headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+  };
   const [isOPEN, setIsOPEN] = useState(false);
   const [files, setFiles] = useState(null);
   const [filess, setFiless] = useState(null);
@@ -38,7 +41,7 @@ function AProducts() {
   } = useQuery({
     queryKey: ["allproducts"],
     queryFn: async () => {
-      const res = await axios.get("/allproducts");
+      const res = await axios.get("/allproducts", config);
       return res.data;
     },
   });
@@ -69,7 +72,7 @@ function AProducts() {
             const product = { ...data, imgUrl };
             const postProduct = async () => {
               await axios
-                .post("/addNewProduct", { product })
+                .post("/addNewProduct", { product }, config)
                 .then((res) => {
                   if (res.data.acknowledged) {
                     setFiles(null);

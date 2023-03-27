@@ -8,10 +8,13 @@ import LodingBar from "../../Components/LodingBar/LodingBar";
 import UseHealmet from "../../Hooks/UseHealmet";
 
 function ADashboard() {
+  const config = {
+    headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+  };
   const { data: products = [] } = useQuery({
     queryKey: ["allproducts"],
     queryFn: async () => {
-      const res = await axios.get("/allproducts");
+      const res = await axios.get("/allproducts", config);
       return res.data;
     },
   });
@@ -19,7 +22,7 @@ function ADashboard() {
   const { data: alluser = [] } = useQuery({
     queryKey: ["alluser"],
     queryFn: async () => {
-      const res = await axios.get("alluser");
+      const res = await axios.get("alluser", config);
       return res.data;
     },
   });
@@ -27,7 +30,7 @@ function ADashboard() {
   const { data: allOrder = [], isLoading } = useQuery({
     queryKey: ["allOrder"],
     queryFn: async () => {
-      const res = await axios.get("allOrder");
+      const res = await axios.get("allOrder", config);
       return res.data;
     },
   });
@@ -35,7 +38,7 @@ function ADashboard() {
   const { data: allReviews = [] } = useQuery({
     queryKey: ["allreviews"],
     queryFn: async () => {
-      const res = await axios.get("allreviews");
+      const res = await axios.get("allreviews", config);
       return res.data;
     },
   });

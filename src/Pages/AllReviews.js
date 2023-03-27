@@ -5,10 +5,13 @@ import ReviewCard from "../Components/ReviewCard/ReviewCard";
 import LodingBar from "../Components/LodingBar/LodingBar";
 
 function AllReviews() {
+  const config = {
+    headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+  };
   const { data: reviews = [], isLoading } = useQuery({
     queryKey: ["allreviews"],
     queryFn: async () => {
-      const res = await axios.get(`allreviews`);
+      const res = await axios.get(`allreviews`, config);
       return res.data;
     },
   });

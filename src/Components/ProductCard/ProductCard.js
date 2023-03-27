@@ -34,7 +34,7 @@ function ProductCard({ product, children }) {
           <span className="link">{minorderquantity}</span>
         </h2>
         <p className="line-clamp-3">{prdescription}</p>
-        <Link to={`/purchase/${_id}`} className="btn w-full btn-primary">
+        <Link to={`/user/purchase/${_id}`} className="btn w-full btn-primary">
           Buy Now
         </Link>
         {children && children}
