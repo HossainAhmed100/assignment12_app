@@ -38,8 +38,6 @@ function Purchase() {
   if (isLoading) {
     return <LodingBar />;
   }
-  console.log(product);
-
   // Product Desctruct
   const {
     imgUrl,
@@ -92,119 +90,125 @@ function Purchase() {
     <div className="py-10 md:px-20 px-5">
       <UseHealmet title={"Order Page"} />
       <div className="bg-base-100 flex items-center gap-4">
-        <div className="w-96 bg-base-100 m-2 flex flex-col items-center justify-between">
-          <div className="px-10 pt-10">
-            <img
-              src={imgUrl}
-              alt="ProductImage"
-              className="rounded-xl object-contain h-40 w-96"
-            />
-          </div>
-          <div className="flex gap-2 p-10 flex-col items-start justify-start">
-            <h2 className="card-title">{productname}</h2>
-            <h2 className="card-title">
-              Price :{" "}
-              <button className="btn btn-error btn-sm">${productprice}</button>
-            </h2>
-            <h2 className="font-medium">
-              Available Quantity :{" "}
-              <span className="link">{availablequantity}</span>
-            </h2>
-            <h2 className="font-medium">
-              Minimum Order Quantity :{" "}
-              <span className="link">{minorderquantity}</span>
-            </h2>
-            <p className="line-clamp-3">{prdescription}</p>
-          </div>
-        </div>
-        <div className="bg-base-100 px-10 py-5 flex flex-col items-center justify-between ">
-          <form onSubmit={handleSubmit(onSubmit)} className="w-96">
-            <div className="form-control w-full max-w-xs">
-              <label className="label">Name</label>
-              <input
-                type="text"
-                defaultValue={user?.displayName || ""}
-                disabled
-                placeholder="Type Your Name"
-                className="input input-bordered w-full max-w-xs"
+        <div className="grid xl:grid-cols-2 grid-cols-1">
+          <div className="w-96 bg-base-100 m-2 flex flex-col items-center justify-between">
+            <div className="px-10 pt-10">
+              <img
+                src={imgUrl}
+                alt="ProductImage"
+                className="rounded-xl object-contain h-40 w-96"
               />
             </div>
-            <div className="form-control w-full max-w-xs">
-              <label className="label">Email</label>
-              <input
-                type="email"
-                defaultValue={user?.email || ""}
-                disabled
-                placeholder="Type Your Email"
-                className="input input-bordered w-full max-w-xs"
-              />
+            <div className="flex gap-2 p-10 flex-col items-start justify-start">
+              <h2 className="card-title">{productname}</h2>
+              <h2 className="card-title">
+                Price :{" "}
+                <button className="btn btn-error btn-sm">
+                  ${productprice}
+                </button>
+              </h2>
+              <h2 className="font-medium">
+                Available Quantity :{" "}
+                <span className="link">{availablequantity}</span>
+              </h2>
+              <h2 className="font-medium">
+                Minimum Order Quantity :{" "}
+                <span className="link">{minorderquantity}</span>
+              </h2>
+              <p className="line-clamp-3">{prdescription}</p>
             </div>
+          </div>
+          <div className="px-10 py-5 ">
+            <form onSubmit={handleSubmit(onSubmit)} className="w-96">
+              <div className="form-control w-full max-w-xs">
+                <label className="label">Name</label>
+                <input
+                  type="text"
+                  defaultValue={user?.displayName || ""}
+                  disabled
+                  placeholder="Type Your Name"
+                  className="input input-bordered w-full max-w-xs"
+                />
+              </div>
+              <div className="form-control w-full max-w-xs">
+                <label className="label">Email</label>
+                <input
+                  type="email"
+                  defaultValue={user?.email || ""}
+                  disabled
+                  placeholder="Type Your Email"
+                  className="input input-bordered w-full max-w-xs"
+                />
+              </div>
 
-            <div className="form-control w-full max-w-xs">
-              <label className="label">Phone</label>
+              <div className="form-control w-full max-w-xs">
+                <label className="label">Phone</label>
+                <input
+                  type="number"
+                  {...register("phone", { required: true })}
+                  placeholder="Type Your Phone Number"
+                  className="input input-bordered w-full max-w-xs"
+                />
+                {errors.phone?.type === "required" && (
+                  <p role="alert" className="text-red-500">
+                    Phone is required
+                  </p>
+                )}
+              </div>
+              <div className="form-control w-full max-w-xs">
+                <label className="label">Address</label>
+                <input
+                  type="text"
+                  {...register("address", { required: true })}
+                  placeholder="Type Your Address"
+                  className="input input-bordered w-full max-w-xs"
+                />
+                {errors.address?.type === "required" && (
+                  <p role="alert" className="text-red-500">
+                    Address is required
+                  </p>
+                )}
+              </div>
+              <div className="form-control w-full max-w-xs">
+                <label className="label">
+                  <span className="label-text">Available Quantity :</span>
+                  <span className="label-text-alt">{availablequantity}</span>
+                </label>
+                <input
+                  type="number"
+                  placeholder="Quantity"
+                  {...register("order_quanriry", {
+                    required: { value: true, message: " Quantity is required" },
+                    min: {
+                      value: minorderquantity,
+                      message: "Plz Check Minimun Order Quantity",
+                    },
+                    max: {
+                      value: availablequantity,
+                      message: "Plz Check Available Product Quantity",
+                    },
+                  })}
+                  className="input input-bordered w-full"
+                />
+                {errors.order_quanriry && (
+                  <p role="alert" className="text-red-500">
+                    {errors.order_quanriry.message}
+                  </p>
+                )}
+                <label className="label">
+                  <span className="label-text-alt">
+                    Minimum Order Quantity :
+                  </span>
+                  <span className="label-text-alt">{minorderquantity}</span>
+                </label>
+              </div>
               <input
-                type="number"
-                {...register("phone", { required: true })}
-                placeholder="Type Your Phone Number"
-                className="input input-bordered w-full max-w-xs"
+                type="submit"
+                value="BY NOW"
+                className="btn w-full max-w-xs btn-primary"
               />
-              {errors.phone?.type === "required" && (
-                <p role="alert" className="text-red-500">
-                  Phone is required
-                </p>
-              )}
-            </div>
-            <div className="form-control w-full max-w-xs">
-              <label className="label">Address</label>
-              <input
-                type="text"
-                {...register("address", { required: true })}
-                placeholder="Type Your Address"
-                className="input input-bordered w-full max-w-xs"
-              />
-              {errors.address?.type === "required" && (
-                <p role="alert" className="text-red-500">
-                  Address is required
-                </p>
-              )}
-            </div>
-            <div className="form-control w-full max-w-xs">
-              <label className="label">
-                <span className="label-text">Available Quantity :</span>
-                <span className="label-text-alt">{availablequantity}</span>
-              </label>
-              <input
-                type="number"
-                placeholder="Quantity"
-                {...register("order_quanriry", {
-                  required: { value: true, message: " Quantity is required" },
-                  min: {
-                    value: minorderquantity,
-                    message: "Plz Check Minimun Order Quantity",
-                  },
-                  max: {
-                    value: availablequantity,
-                    message: "Plz Check Available Product Quantity",
-                  },
-                })}
-                className="input input-bordered w-full"
-              />
-              {errors.order_quanriry && (
-                <p role="alert" className="text-red-500">
-                  {errors.order_quanriry.message}
-                </p>
-              )}
-              <label className="label">
-                <span className="label-text-alt">Minimum Order Quantity :</span>
-                <span className="label-text-alt">{minorderquantity}</span>
-              </label>
-            </div>
-            <input
-              type="submit"
-              value="BY NOW"
-              className="btn w-full max-w-xs btn-primary"
-            />
-          </form>
+            </form>
+          </div>
         </div>
       </div>
     </div>
