@@ -44,7 +44,7 @@ function UserProfile() {
     const addresss = data.address;
     const userInfo = { names, phones, addresss, email, role };
     await axios
-      .put(url, { userInfo })
+      .put(url, { userInfo }, config)
       .then((res) => {
         if (res.data.modifiedCount === 1) {
           refetch();

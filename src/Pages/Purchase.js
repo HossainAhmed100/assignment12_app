@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "../axios";
 import LodingBar from "../Components/LodingBar/LodingBar";
@@ -6,40 +6,39 @@ import { useForm } from "react-hook-form";
 import { AuthContext } from "../Context/AuthProvider";
 import { toast } from "react-toastify";
 import UseHealmet from "../Hooks/UseHealmet";
+import { useQuery } from "@tanstack/react-query";
 
 function Purchase() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const [product, setProduct] = useState(null);
-  const [loading, setLoading] = useState(true);
+
   const { user } = useContext(AuthContext);
   const {
     register,
     formState: { errors },
     handleSubmit,
   } = useForm();
-
+  const config = {
+    headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+  };
   // Fetch Product By ID Params
-  useEffect(() => {
-    const loadProduct = async () => {
+  const { data: product = [], isLoading } = useQuery({
+    queryKey: ["singleProduct", id],
+    queryFn: async () => {
       const url = `singleProduct/${id}`;
-      await axios
-        .get(url)
-        .then((res) => {
-          if (res.status === 200) {
-            setProduct(res.data);
-            setLoading(false);
-          }
-        })
-        .catch((error) => console.log(error));
-    };
-    loadProduct();
-  }, [id]);
+      const res = await axios.get(url, config);
+      if (res.status === 200) {
+        return res.data;
+      }
+      throw new Error(`Failed to fetch data: ${res.status}`);
+    },
+  });
 
   //loading Animation
-  if (loading) {
+  if (isLoading) {
     return <LodingBar />;
   }
+  console.log(product);
 
   // Product Desctruct
   const {
@@ -79,7 +78,7 @@ function Purchase() {
       orderQuantity,
     };
     await axios
-      .post(`placeNewOrder/${userEmail}`, { order })
+      .post(`placeNewOrder/${userEmail}`, { order }, config)
       .then((res) => {
         if (res.data.acknowledged) {
           toast.success("Order Place Succeded!");

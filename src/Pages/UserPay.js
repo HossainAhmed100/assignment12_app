@@ -1,41 +1,38 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext } from "react";
 import axios from "../axios";
 import { useNavigate, useParams } from "react-router-dom";
 import LodingBar from "../Components/LodingBar/LodingBar";
 import { useForm } from "react-hook-form";
 import UseHealmet from "../Hooks/UseHealmet";
 import { AuthContext } from "../Context/AuthProvider";
+import { useQuery } from "@tanstack/react-query";
 
 function UserPay() {
   const { id } = useParams();
   const { user } = useContext(AuthContext);
-  const [order, setOrder] = useState(null);
-  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
   const {
     register,
     formState: { errors },
     handleSubmit,
   } = useForm();
-
+  const config = {
+    headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+  };
   // Fetch Product By ID Params
-  useEffect(() => {
-    const loadProduct = async () => {
+  const { data: order = [], isLoading } = useQuery({
+    queryKey: ["getUserOrder", id],
+    queryFn: async () => {
       const url = `getUserOrder/${id}`;
-      await axios
-        .get(url)
-        .then((res) => {
-          if (res.status === 200) {
-            setOrder(res.data);
-            setLoading(false);
-          }
-        })
-        .catch((error) => console.log(error));
-    };
-    loadProduct();
-  }, [id]);
+      const res = await axios.get(url, config);
+      if (res.status === 200) {
+        return res.data;
+      }
+      throw new Error(`Failed to fetch data: ${res.status}`);
+    },
+  });
 
-  if (loading) {
+  if (isLoading) {
     return <LodingBar />;
   }
   const {
@@ -52,7 +49,7 @@ function UserPay() {
   const onSubmit = async (data) => {
     const transactionId = data.transactionId;
     await axios
-      .put(`paymentUpdate/${user?.email}`, { transactionId, _id })
+      .put(`paymentUpdate/${user?.email}`, { transactionId, _id }, config)
       .then((res) => {
         if (res.data.matchedCount === 1) {
           navigate("/user/order");
